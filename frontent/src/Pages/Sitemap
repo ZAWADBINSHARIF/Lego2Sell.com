@@ -1,0 +1,26 @@
+<div class="flex flex-col items-center w-full justify-between"> </div>
+<div class="flex">
+<div class="w-full px-6 lg:px-44  py-12 lg:py-24">
+<h1 class="text-5xl h1 text-center lg:items-start  font-bold mb-8">Sitemap</h1>
+<div class="content-wrapper text-sm lg:text-base">
+<div>
+<div class="TearmsText">
+<p><a title="Home" href="https://www.lego2sell.com/">Home</a></p>
+<p>Menu</p>
+<ul class="">
+<li class="pb-5 hover:text-blue-500 duration-300 last:pb-0 relative"><a class="font-bold false" title="Acceptance guidelines" href="https://www.lego2sell.com/acceptance-guidelines">Acceptance guidelines</a></li>
+<li class="pb-5  hover:text-blue-500 duration-300 last:pb-0 relative"><a class="font-bold false" title="Packaging guidelines" href="https://www.lego2sell.com/packaging-guidelines">Packaging guidelines</a></li>
+<li class="pb-5 hover:text-blue-500 duration-300 last:pb-0 relative"><a class="font-bold false" title="About" href="https://www.lego2sell.com/about">About</a></li>
+<li class="pb-5 over:text-blue-500 hover:text-blue-500 duration-300 last:pb-0 relative"><a class="font-bold false" title="Contact" href="https://www.lego2sell.com/contact">Contact</a></li>
+<li class="pb-5 duration-300 hover:text-blue-500 last:pb-0 relative"><a class="font-bold false" title="Privacy statement" href="https://www.lego2sell.com/privacy-statement">Privacy statement</a></li>
+<li class="pb-5 duration-300 hover:text-blue-500 last:pb-0 relative"><a class="font-bold false" title="Terms &amp; conditions" href="https://www.lego2sell.com/terms-and-conditions">Terms &amp; conditions</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex mt-auto w-full items-end justify-center bg-blue-500"><a title="Account" href="https://www.lego2sell.com/login/">Account</a></div>
+<div class="flex mt-auto w-full items-end justify-center bg-blue-500"><a title="How it Works?" href="https://www.lego2sell.com/how-it-works">How it Works?</a></div>
+<div class="flex mt-auto w-full items-end justify-center bg-blue-500"> </div>
+<div class="flex mt-auto w-full items-end justify-center bg-blue-500"> </div>

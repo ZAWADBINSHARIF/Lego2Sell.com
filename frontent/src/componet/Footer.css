@@ -1,0 +1,19 @@
+.footer-container {
+    position: relative;
+    background-color: #0074cc; /* Replace with your desired color */
+    text-align: center;
+    padding: 20px 0;
+    overflow: hidden;
+  }
+  
+  .footer-container::before {
+    content: '';
+    position: absolute;
+    bottom: -50px; /* Adjust for the curve position */
+    left: 0;
+    width: 100%;
+    height: 100px; /* Adjust for the curve depth */
+    background-color: #0074cc; /* Same as your background color */
+    border-radius: 50% / 100px; /* Creates an elliptical curve */
+  }
+  

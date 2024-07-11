@@ -1,0 +1,2 @@
+User-Agent: *
+Allow: / https://www.lego2sell.com/sitemap.xml

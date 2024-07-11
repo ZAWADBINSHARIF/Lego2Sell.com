@@ -1,0 +1,45 @@
+import React from "react"
+import { Link } from "react-router-dom"
+import { Helmet } from 'react-helmet'
+
+const Sitemap = () => {
+  return (
+    <div>
+      <Helmet>
+        <title>Sitemap - Lego2Sell</title>
+        <meta
+          name="description"
+          content="This is a sitemap page made up of all links to all the web pages present in Lego2Sell.com for your easy navigation."
+        />
+        <meta
+          name="keywords"
+          content="Acceptance Guidelines, Sell LEGO sets, LEGO2SELL acceptance, contact LEGO2SELL"
+        />
+      </Helmet>
+      <div className="w-full px-6 lg:px-44 py-12 lg:py-24">
+        <h1 className="text-5xl h1 font-bold mb-8">Sitemap</h1>
+        <div className="">
+          <div>
+            <div className="text-base lg:text-lg text-black font-medium">
+              <p className="py-4 mt-6">
+                <ul>
+<li><a title="Home" href="https://www.lego2sell.com/" target="_blank" rel="noopener">Home</a></li>
+<li><a title="Acceptance guidelines" href="https://www.lego2sell.com/acceptance-guidelines" target="_blank" rel="noopener">Acceptance guidelines</a></li>
+<li><a title="Packaging guidelines" href="https://www.lego2sell.com/packaging-guidelines" target="_blank" rel="noopener">Packaging guidelines</a></li>
+<li><a title="About" href="https://www.lego2sell.com/about" target="_blank" rel="noopener">About</a></li>
+<li><a title="Contact" href="https://www.lego2sell.com/contact" target="_blank" rel="noopener">Contact</a></li>
+<li><a title="Privacy statement" href="https://www.lego2sell.com/privacy-statement" target="_blank" rel="noopener">Privacy statement</a></li>
+<li><a title="Terms &amp; conditions" href="https://www.lego2sell.com/terms-and-conditions" target="_blank" rel="noopener">Terms &amp; conditions</a></li>
+<li><a title="How it Works?" href="https://www.lego2sell.com/how-it-works" target="_blank" rel="noopener">How it Works?</a></li>
+<li><a title="Account" href="https://www.lego2sell.com/login/" target="_blank" rel="noopener">Account</a></li>
+</ul>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Sitemap
