@@ -130,7 +130,7 @@ const authRoutes = express.Router();
 app.use("/", legoRoute);
 app.use("/admin", blogRoute);
 app.use("/admin/service", commentRoute);
-
+app.get("/test", (_, res) => res.send("<h1>Server is running successfully!</h1>"));
 mongoose.connect(
   process.env.DATABASE_URL,
   {
@@ -2522,7 +2522,7 @@ app.get("/export/csv/mydetails", async (req, res) => {
   }
 });
 
-app.get("/export/csv/email", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     const users = await UserData.find({}, "data");
 
