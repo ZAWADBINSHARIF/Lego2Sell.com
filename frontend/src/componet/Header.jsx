@@ -1,93 +1,93 @@
-import { Accordion, Group, Text } from "@mantine/core"
-import React, { useEffect, useRef, useState } from "react"
-import { charactersList } from "./FAQData"
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import axios from "axios"
-import baseUrl from "../context/baseUrl"
+import { Accordion, Group, Text } from "@mantine/core";
+import React, { useEffect, useRef, useState } from "react";
+import { charactersList } from "./FAQData";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import baseUrl from "../context/baseUrl";
 const Header = ({ addBasket }) => {
-  const [FAQOpen, setFAQOpen] = useState()
-  const [openMenu, setOpenMenu] = useState()
-  const navigation = useNavigate()
+  const [FAQOpen, setFAQOpen] = useState();
+  const [openMenu, setOpenMenu] = useState();
+  const navigation = useNavigate();
   // console.log("addBasket", addBasket)
   // const totalPrice = localStorage.getItem("totalPrice")
-  const location = useLocation()
-  const storedUserId = localStorage.getItem("userId")
+  const location = useLocation();
+  const storedUserId = localStorage.getItem("userId");
   // console.log("storedUserId", location.pathname)
-  const route = location.pathname
-  const Basket = localStorage.getItem("Basket")
-  const BasketStatus = localStorage.getItem("BasketStatus")
-  const [orderitems, setOrderitems] = useState()
-  const [userData, setUserData] = useState()
+  const route = location.pathname;
+  const Basket = localStorage.getItem("Basket");
+  const BasketStatus = localStorage.getItem("BasketStatus");
+  const [orderitems, setOrderitems] = useState();
+  const [userData, setUserData] = useState();
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
           `${baseUrl}/user/${storedUserId}`
-        )
-        setUserData(response.data)
-        console.log(userData)
+        );
+        setUserData(response.data);
+        console.log(userData);
         localStorage.setItem(
           "adminView",
           response.data.admin === "admin" ? "admin" : null
-        )
+        );
         // setLoading(false)
       } catch (error) {
-        console.error(error)
+        console.error(error);
         // setLoading(false)
       }
-    }
+    };
 
-    if(storedUserId !== null){
-      fetchUserData()
+    if (storedUserId !== null) {
+      fetchUserData();
     }
-  }, [storedUserId, setUserData])
+  }, [storedUserId, setUserData]);
   useEffect(() => {
     const fetchUserOrders = async () => {
       try {
         const response = await axios.get(
           `${baseUrl}/Getorder/${storedUserId}`
-        )
+        );
 
         if (response.status === 200) {
-          const { orders } = response.data
+          const { orders } = response.data;
           // console.log("User orders:", orders)
-          setOrderitems(orders)
+          setOrderitems(orders);
           // Process the orders data as needed
         } else {
-          throw new Error("Error: " + response.status)
+          throw new Error("Error: " + response.status);
         }
       } catch (error) {
-        console.error("An error occurred:", error)
+        console.error("An error occurred:", error);
         // Handle the error as needed
       }
-    }
+    };
 
-    if(storedUserId !== null){
-      fetchUserOrders()
+    if (storedUserId !== null) {
+      fetchUserOrders();
     }
-  }, [storedUserId, setOrderitems])
+  }, [storedUserId, setOrderitems]);
 
-  const [totalPrice, setTotalPrice] = useState(0)
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     if (orderitems) {
       const PostOffer = orderitems
         ?.filter((value) => {
-          return value?.Status === "Paid" || value?.Status === "Rejected"
+          return value?.Status === "Paid" || value?.Status === "Rejected";
         })
-        ?.map((value) => value.Price)
+        ?.map((value) => value.Price);
       const totalPrice = orderitems.reduce(
         (sum, value) => sum + (value?.Price || 0),
         0
-      )
+      );
       const totalPriceMinusPostOffer =
         totalPrice -
-        (PostOffer?.reduce((sum, price) => sum + (price || 0), 0) || 0)
+        (PostOffer?.reduce((sum, price) => sum + (price || 0), 0) || 0);
       // console.log("demo2938293892382938", totalPriceMinusPostOffer)
-      setTotalPrice(totalPriceMinusPostOffer)
+      setTotalPrice(totalPriceMinusPostOffer);
       // localStorage.setItem("totalPrice", totalPrice)
     }
-  }, [orderitems])
+  }, [orderitems]);
   // console.log(route)
   const items = charactersList.map((item) => (
     <Accordion.Item value={item.id} key={item.label}>
@@ -98,7 +98,7 @@ const Header = ({ addBasket }) => {
         <Text size="sm">{item.content}</Text>
       </Accordion.Panel>
     </Accordion.Item>
-  ))
+  ));
 
   function useOutsideAlerter(ref) {
     useEffect(() => {
@@ -107,48 +107,48 @@ const Header = ({ addBasket }) => {
        */
       function handleClickOutside(event) {
         if (ref.current && !ref.current.contains(event.target)) {
-          setFAQOpen(false)
-          setMenuOpen(false)
-          setOpenMenu(false)
+          setFAQOpen(false);
+          setMenuOpen(false);
+          setOpenMenu(false);
         }
       }
       // Bind the event listener
-      document.addEventListener("mousedown", handleClickOutside)
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
         // Unbind the event listener on clean up
-        document.removeEventListener("mousedown", handleClickOutside)
-      }
-    }, [ref])
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
   }
   const PostOffer = orderitems
     ?.filter((value) => {
-      return value.Status === "Paid" || value.Status === "Rejected"
+      return value.Status === "Paid" || value.Status === "Rejected";
     })
-    ?.map((value) => value)
+    ?.map((value) => value);
 
   // Find PostOffer length
   // const postOfferLength = PostOffer ? PostOffer.length : 0
-  const [numberofitem, setNumberofitem] = useState(0)
-  const excludedPaths = ["/my-account", "/", "/product/", "/selling-basket/"]
+  const [numberofitem, setNumberofitem] = useState(0);
+  const excludedPaths = ["/my-account", "/", "/product/", "/selling-basket/"];
   useEffect(() => {
     const calculatedNumber =
-      (orderitems?.length || 0) + +(Basket || 0) - (PostOffer?.length || 0)
-    const MyAccountNumber = (orderitems?.length || 0) - (PostOffer?.length || 0)
+      (orderitems?.length || 0) + +(Basket || 0) - (PostOffer?.length || 0);
+    const MyAccountNumber = (orderitems?.length || 0) - (PostOffer?.length || 0);
     if (
       location.pathname !== "/my-account" &&
       !excludedPaths.includes(location.pathname)
     ) {
-      setNumberofitem(calculatedNumber)
+      setNumberofitem(calculatedNumber);
     } else {
-      setNumberofitem(MyAccountNumber)
+      setNumberofitem(MyAccountNumber);
     }
     // console.log("Postman", calculatedNumber)
-  }, [orderitems, Basket, PostOffer])
-  const wrapperRef = useRef(null)
+  }, [orderitems, Basket, PostOffer]);
+  const wrapperRef = useRef(null);
 
-  useOutsideAlerter(wrapperRef)
-  const [MenuOpen, setMenuOpen] = useState()
-  const router = location.pathname
+  useOutsideAlerter(wrapperRef);
+  const [MenuOpen, setMenuOpen] = useState();
+  const router = location.pathname;
 
   return (
     <div
@@ -163,9 +163,9 @@ const Header = ({ addBasket }) => {
           <div className="flex gap-8 items-center">
             <button
               onClick={() => {
-                setMenuOpen(!MenuOpen)
-                setFAQOpen(false)
-                setOpenMenu(false)
+                setMenuOpen(!MenuOpen);
+                setFAQOpen(false);
+                setOpenMenu(false);
               }}
               className="lg:text-lg text-[14px] font-medium"
             >
@@ -243,9 +243,9 @@ const Header = ({ addBasket }) => {
             )}
             <button
               onClick={() => {
-                setFAQOpen(!FAQOpen)
-                setOpenMenu(false)
-                setMenuOpen(false)
+                setFAQOpen(!FAQOpen);
+                setOpenMenu(false);
+                setMenuOpen(false);
               }}
               className="lg:text-lg text-[14px] font-medium"
             >
@@ -323,8 +323,8 @@ const Header = ({ addBasket }) => {
             )}
             <button
               onClick={() => {
-                setFAQOpen(false)
-                setMenuOpen(false)
+                setFAQOpen(false);
+                setMenuOpen(false);
                 if (
                   storedUserId === null ||
                   storedUserId === "null" ||
@@ -332,9 +332,9 @@ const Header = ({ addBasket }) => {
                 ) {
                   navigation("/login/", {
                     state: { route },
-                  })
+                  });
                 } else {
-                  navigation("/my-account")
+                  navigation("/my-account");
                 }
               }}
               className="lg:text-lg text-[14px]  font-medium"
@@ -343,13 +343,13 @@ const Header = ({ addBasket }) => {
             </button>
             <button className="lg:text-lg text-[14px]  font-medium"
             >
-            <Link
-            onClick={() => setFAQOpen(false)}
-            className="text-blue-600"
-            to="/blogs/"
-            >
-            Blogs
-            </Link>{" "}
+              <Link
+                onClick={() => setFAQOpen(false)}
+                className="text-blue-600"
+                to="/blogs/"
+              >
+                Blogs
+              </Link>{" "}
             </button>
 
 
@@ -358,9 +358,9 @@ const Header = ({ addBasket }) => {
             {userData?.admin === "admin" && (
               <button
                 onClick={() => {
-                  setFAQOpen(false)
-                  setMenuOpen(false)
-                  navigation("/AdminDashboard")
+                  setFAQOpen(false);
+                  setMenuOpen(false);
+                  navigation("/AdminDashboard");
                   // if (
                   //   storedUserId === null ||
                   //   storedUserId === "null" ||
@@ -415,14 +415,14 @@ const Header = ({ addBasket }) => {
             >
               <img
                 className="w-6 h-6"
-                src="https://cdn.pixabay.com/photo/2021/06/15/12/28/tiktok-6338430_1280.png"
+                src="https://img.icons8.com/?size=100&id=gHI-Q095DJQb&format=png&color=000000"
                 alt=""
               />
             </Link>
             <Link
               onClick={() => {
-                setFAQOpen(false)
-                setMenuOpen(false)
+                setFAQOpen(false);
+                setMenuOpen(false);
               }}
               to="/how-it-works"
               className="flex gap-2 items-center"
@@ -438,9 +438,9 @@ const Header = ({ addBasket }) => {
             </Link>
             <button
               onClick={() => {
-                setFAQOpen(false)
-                setMenuOpen(false)
-                setOpenMenu(false)
+                setFAQOpen(false);
+                setMenuOpen(false);
+                setOpenMenu(false);
                 navigation(
                   storedUserId === "null" || storedUserId === null
                     ? "/login/"
@@ -448,7 +448,7 @@ const Header = ({ addBasket }) => {
                   {
                     state: { route },
                   }
-                )
+                );
               }}
               className="flex gap-3 items-center"
             >
@@ -458,8 +458,8 @@ const Header = ({ addBasket }) => {
                   {storedUserId === "null"
                     ? "0"
                     : numberofitem
-                    ? numberofitem
-                    : "No"}{" "}
+                      ? numberofitem
+                      : "No"}{" "}
                   item | £{totalPrice ? totalPrice.toFixed(2) : "0"}
                 </p>
               </div>
@@ -488,9 +488,9 @@ const Header = ({ addBasket }) => {
           <div className="lg:hidden flex">
             <button
               onClick={() => {
-                setOpenMenu(!openMenu)
-                setMenuOpen(false)
-                setFAQOpen(false)
+                setOpenMenu(!openMenu);
+                setMenuOpen(false);
+                setFAQOpen(false);
               }}
             >
               <svg
@@ -564,9 +564,9 @@ const Header = ({ addBasket }) => {
                 </Link>
                 <Link
                   onClick={() => {
-                    setFAQOpen(false)
-                    setMenuOpen(false)
-                    setOpenMenu(false)
+                    setFAQOpen(false);
+                    setMenuOpen(false);
+                    setOpenMenu(false);
                     navigation(
                       storedUserId === "null" || storedUserId === null
                         ? "/login/"
@@ -574,7 +574,7 @@ const Header = ({ addBasket }) => {
                       {
                         state: { route },
                       }
-                    )
+                    );
                   }}
                   className="flex gap-3 items-center"
                 >
@@ -584,17 +584,17 @@ const Header = ({ addBasket }) => {
                       {storedUserId === "null"
                         ? "0"
                         : numberofitem
-                        ? numberofitem
-                        : "No"}{" "}
+                          ? numberofitem
+                          : "No"}{" "}
                       item | £{totalPrice ? totalPrice.toFixed(2) : "0"}
                     </p>
                   </div>
-                    <svg
+                  <svg
                     width={28}
                     viewBox="0 -0.5 25 25"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    >
+                  >
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g
                       id="SVGRepo_tracerCarrier"
@@ -647,9 +647,9 @@ const Header = ({ addBasket }) => {
 
             <Link
               onClick={() => {
-                setFAQOpen(false)
-                setMenuOpen(false)
-                setOpenMenu(false)
+                setFAQOpen(false);
+                setMenuOpen(false);
+                setOpenMenu(false);
               }}
               to="/how-it-works"
               className="hidden lg:flex gap-2 items-center"
@@ -686,8 +686,8 @@ const Header = ({ addBasket }) => {
             </Link>
             <button
               onClick={() => {
-                setMenuOpen(!MenuOpen)
-                setFAQOpen(false)
+                setMenuOpen(!MenuOpen);
+                setFAQOpen(false);
               }}
               className="text-lg lg:flex hidden font-medium"
             >
@@ -762,9 +762,9 @@ const Header = ({ addBasket }) => {
             )}
             <button
               onClick={() => {
-                setFAQOpen(!FAQOpen)
-                setOpenMenu(false)
-                setMenuOpen(false)
+                setFAQOpen(!FAQOpen);
+                setOpenMenu(false);
+                setMenuOpen(false);
               }}
               className="text-lg hidden lg:block font-medium"
             >
@@ -843,8 +843,8 @@ const Header = ({ addBasket }) => {
 
             <button
               onClick={() => {
-                setFAQOpen(false)
-                setMenuOpen(false)
+                setFAQOpen(false);
+                setMenuOpen(false);
                 navigation(
                   storedUserId === "null" || storedUserId === null
                     ? "/login/"
@@ -852,7 +852,7 @@ const Header = ({ addBasket }) => {
                   {
                     state: { route },
                   }
-                )
+                );
               }}
               className="text-lg hidden lg:block  font-medium"
             >
@@ -860,8 +860,8 @@ const Header = ({ addBasket }) => {
             </button>
             <Link
               onClick={() => {
-                setFAQOpen(false)
-                setMenuOpen(false)
+                setFAQOpen(false);
+                setMenuOpen(false);
                 navigation(
                   storedUserId === "null" || storedUserId === null
                     ? "/login/"
@@ -869,8 +869,8 @@ const Header = ({ addBasket }) => {
                   {
                     state: { route },
                   }
-                )
-                window.location.reload()
+                );
+                window.location.reload();
               }}
               className=" gap-3  hidden lg:flex items-center m-0"
             >
@@ -878,7 +878,7 @@ const Header = ({ addBasket }) => {
                 <span className="text-lg"> Your Sets</span>
               </div>
               {orderitems && (
-                <h3 className="bg-blue-500 px-3.5 py-1 rounded-full text-white" style={{fontSize: 16, fontWeight: 400}}>
+                <h3 className="bg-blue-500 px-3.5 py-1 rounded-full text-white" style={{ fontSize: 16, fontWeight: 400 }}>
                   {numberofitem !== "NAN" ? numberofitem : 0}
                 </h3>
               )}
@@ -888,8 +888,8 @@ const Header = ({ addBasket }) => {
             <button
               className="absolute top-8 right-8"
               onClick={() => {
-                setOpenMenu(!openMenu)
-                setMenuOpen(false)
+                setOpenMenu(!openMenu);
+                setMenuOpen(false);
               }}
             >
               <svg
@@ -964,8 +964,8 @@ const Header = ({ addBasket }) => {
 
                 <button
                   onClick={() => {
-                    setMenuOpen(!MenuOpen)
-                    setFAQOpen(false)
+                    setMenuOpen(!MenuOpen);
+                    setFAQOpen(false);
 
                     // setMenuOpen(false)
                   }}
@@ -1009,8 +1009,8 @@ const Header = ({ addBasket }) => {
                     <ul class="mt-24 space-y-5">
                       <li
                         onClick={() => {
-                          setMenuOpen(false)
-                          setOpenMenu(false)
+                          setMenuOpen(false);
+                          setOpenMenu(false);
                         }}
                         class="pb-5  hover:text-blue-500 duration-300 last:pb-0 relative"
                       >
@@ -1025,8 +1025,8 @@ const Header = ({ addBasket }) => {
                       <li class="pb-5  hover:text-blue-500 duration-300 last:pb-0 relative">
                         <Link
                           onClick={() => {
-                            setMenuOpen(false)
-                            setOpenMenu(false)
+                            setMenuOpen(false);
+                            setOpenMenu(false);
                           }}
                           title="Packaging guidelines"
                           class="font-bold false border text-center w-full py-4 px-8 rounded-xl"
@@ -1039,8 +1039,8 @@ const Header = ({ addBasket }) => {
                       <li class="pb-5 hover:text-blue-500 duration-300 last:pb-0 relative">
                         <Link
                           onClick={() => {
-                            setMenuOpen(false)
-                            setOpenMenu(false)
+                            setMenuOpen(false);
+                            setOpenMenu(false);
                           }}
                           title="About"
                           class="font-bold false border text-center w-full py-4 px-8 rounded-xl"
@@ -1052,8 +1052,8 @@ const Header = ({ addBasket }) => {
                       <li class="pb-5 over:text-blue-500 duration-300 last:pb-0 relative">
                         <Link
                           onClick={() => {
-                            setMenuOpen(false)
-                            setOpenMenu(false)
+                            setMenuOpen(false);
+                            setOpenMenu(false);
                           }}
                           title="Contact"
                           class="font-bold false border text-center w-full py-4 px-8 rounded-xl"
@@ -1065,8 +1065,8 @@ const Header = ({ addBasket }) => {
                       <li class="pb-5 duration-300 hover:text-blue-500 last:pb-0 relative">
                         <Link
                           onClick={() => {
-                            setMenuOpen(false)
-                            setOpenMenu(false)
+                            setMenuOpen(false);
+                            setOpenMenu(false);
                           }}
                           title="Privacy statement"
                           class="font-bold false border text-center w-full py-4 px-8 rounded-xl"
@@ -1078,8 +1078,8 @@ const Header = ({ addBasket }) => {
                       <li class="pb-5 duration-300 hover:text-blue-500 last:pb-0 relative">
                         <Link
                           onClick={() => {
-                            setMenuOpen(false)
-                            setOpenMenu(false)
+                            setMenuOpen(false);
+                            setOpenMenu(false);
                           }}
                           title="Terms &amp; conditions"
                           class="font-bold false border text-center w-full py-4 px-8 rounded-xl"
@@ -1093,7 +1093,7 @@ const Header = ({ addBasket }) => {
                 )}
                 <button
                   onClick={() => {
-                    setFAQOpen(!FAQOpen)
+                    setFAQOpen(!FAQOpen);
                     // setMenuOpen(false)
                     // setOpenMenu(false)
                   }}
@@ -1202,9 +1202,9 @@ const Header = ({ addBasket }) => {
                 )}
                 <button
                   onClick={() => {
-                    setFAQOpen(false)
-                    setMenuOpen(false)
-                    setOpenMenu(false)
+                    setFAQOpen(false);
+                    setMenuOpen(false);
+                    setOpenMenu(false);
                     navigation(
                       storedUserId === "null" || storedUserId === null
                         ? "/login/"
@@ -1212,7 +1212,7 @@ const Header = ({ addBasket }) => {
                       {
                         state: { route },
                       }
-                    )
+                    );
                   }}
                   className="text-[14px]  font-medium"
                 >
@@ -1220,9 +1220,9 @@ const Header = ({ addBasket }) => {
                 </button>
                 <Link
                   onClick={() => {
-                    setFAQOpen(false)
-                    setMenuOpen(false)
-                    setOpenMenu(false)
+                    setFAQOpen(false);
+                    setMenuOpen(false);
+                    setOpenMenu(false);
                     navigation(
                       storedUserId === "null" || storedUserId === null
                         ? "/login/"
@@ -1230,7 +1230,7 @@ const Header = ({ addBasket }) => {
                       {
                         state: { route },
                       }
-                    )
+                    );
                   }}
                   className="flex gap-3 items-center"
                 >
@@ -1240,8 +1240,8 @@ const Header = ({ addBasket }) => {
                       {storedUserId === "null"
                         ? "0"
                         : numberofitem
-                        ? numberofitem
-                        : "No"}{" "}
+                          ? numberofitem
+                          : "No"}{" "}
                       item | £{totalPrice ? totalPrice.toFixed(2) : "0"}
                     </p>
                   </div>
@@ -1272,9 +1272,9 @@ const Header = ({ addBasket }) => {
           <div className="md:flex gap-8   items-center ">
             <Link
               onClick={() => {
-                setMenuOpen(false)
-                navigation("/")
-                window.location.reload()
+                setMenuOpen(false);
+                navigation("/");
+                window.location.reload();
               }}
             >
               <img
@@ -1295,10 +1295,10 @@ const Header = ({ addBasket }) => {
         <div className="h-[8px] bg-[#F4A414]"></div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
 function AccordionLabel({ label, image, description }) {
   return (
     <Group noWrap>
@@ -1309,5 +1309,5 @@ function AccordionLabel({ label, image, description }) {
         </Text>
       </div>
     </Group>
-  )
+  );
 }
