@@ -20,9 +20,9 @@ const uuid = require("uuid");
 const moment = require("moment");
 const json2csv = require("json2csv").Parser;
 const ExcelJS = require("exceljs");
-const pdflib=require("pdf-lib")
-const { degrees, PDFDocument, rgb, StandardFonts }=pdflib;
-const  download =require("downloadjs")
+const pdflib = require("pdf-lib");
+const { degrees, PDFDocument, rgb, StandardFonts } = pdflib;
+const download = require("downloadjs");
 // routes
 const crypto = require("crypto");
 const legoRoute = require("./routes/lego");
@@ -32,7 +32,7 @@ const UserData = require("./models/UserData");
 const MyDetails = require("./models/MyDetails");
 const SearchItem = require("./models/Search");
 const User = require("./models/user.model");
-const fetch=require("node-fetch");
+const fetch = require("node-fetch");
 const CryptoJS = require('crypto-js');
 const { Config } = require("./config.js");
 const { isAdminUser } = require("./utils/adminUser.js");
@@ -113,7 +113,7 @@ var transport = nodemailer.createTransport({
 });
 app.post("/signup", async (req, res) => {
   try {
-    console.log("test")
+    console.log("test");
     const { email, password } = req.body;
 
     const encryptedData = req.header('source');
@@ -332,8 +332,8 @@ const generateOfferId = () => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const handleModifyPdf = async (timestamp,offerId) => {
-  const url = "https://lego2sell.com/completpdf.pdf"
+const handleModifyPdf = async (timestamp, offerId) => {
+  const url = "https://lego2sell.com/completpdf.pdf";
 
   const response = await fetch(url);
   if (!response.ok) {
@@ -342,12 +342,12 @@ const handleModifyPdf = async (timestamp,offerId) => {
 
   const existingPdfBytes = await response.arrayBuffer();
 
-  const pdfDoc = await PDFDocument.load(existingPdfBytes)
-  const helveticaFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold)
+  const pdfDoc = await PDFDocument.load(existingPdfBytes);
+  const helveticaFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-  const pages = pdfDoc.getPages()
-  const firstPage = pages[1]
-  const { width, height } = firstPage.getSize()
+  const pages = pdfDoc.getPages();
+  const firstPage = pages[1];
+  const { width, height } = firstPage.getSize();
   firstPage.drawText(`${timestamp}`, {
     x: 220,
     y: 240,
@@ -355,9 +355,9 @@ const handleModifyPdf = async (timestamp,offerId) => {
     font: helveticaFont,
     color: rgb(0, 0, 0),
     rotate: degrees(0),
-  })
-  const second = pages[1]
-  const { width1, height1 } = second.getSize()
+  });
+  const second = pages[1];
+  const { width1, height1 } = second.getSize();
   firstPage.drawText(`#${offerId}`, {
     x: 220,
     y: 200,
@@ -365,16 +365,16 @@ const handleModifyPdf = async (timestamp,offerId) => {
     font: helveticaFont,
     color: rgb(0, 0, 0),
     rotate: degrees(0),
-  })
+  });
 
-  const pdfBytes = await pdfDoc.save()
-  return pdfBytes
+  const pdfBytes = await pdfDoc.save();
+  return pdfBytes;
   // Trigger the browser to download the PDF document
-}
+};
 app.get("/download-pdf", async (req, res) => {
   try {
-    const {timestamp,offerId}=req.query;
-    const pdfBytes = await handleModifyPdf(timestamp,offerId);
+    const { timestamp, offerId } = req.query;
+    const pdfBytes = await handleModifyPdf(timestamp, offerId);
 
     // Set response headers for PDF download
     res.setHeader("Content-Type", "application/pdf");
@@ -408,7 +408,7 @@ app.post("/Getorder/:id", async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .json({ message: "User details not found"});
+        .json({ message: "User details not found" });
     }
 
     // Push the new order into the existing user.Order array
@@ -420,7 +420,7 @@ app.post("/Getorder/:id", async (req, res) => {
       from: "noreply@lego2sell.com",
       to: user.email,
       subject: "Offer Summary",
-      html:` <div style="word-spacing:normal;background-color:#eeeeee">
+      html: ` <div style="word-spacing:normal;background-color:#eeeeee">
       <div style="background-color:#eeeeee">
 
           <div style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:600px">
@@ -599,7 +599,7 @@ app.post("/Getorder/:id", async (req, res) => {
                       <!-- Delivery Method -->
                       <tr style="padding-bottom: 1rem;">
                           <td style="text-align: left;">Delivery Method</td>
-                          <td style="text-align: right; white-space: nowrap;">${data.Deliverymethod? data.Deliverymethod : "Drop off"}</td>
+                          <td style="text-align: right; white-space: nowrap;">${data.Deliverymethod ? data.Deliverymethod : "Drop off"}</td>
                       </tr>
                       <tr style="height: 1rem;"></tr>
                       <!-- Status -->
@@ -1045,7 +1045,7 @@ app.put("/Getorder/status/:id", async (req, res) => {
     const token = req.headers?.authorization?.split(" ")[1];
     const isAdmin = await isAdminUser(token, res);
     if (!isAdmin) {
-        return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ message: "Unauthorized" });
     }
     // Find the user details by ID
     const user = await UserData.findById(id);
@@ -1788,7 +1788,7 @@ app.delete("/delete-account", async (req, res) => {
     const token = req.headers?.authorization?.split(" ")[1];
     const isAdmin = await isAdminUser(token, res);
     if (!isAdmin) {
-        return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ message: "Unauthorized" });
     }
     const { email } = req.body;
 
@@ -1811,7 +1811,7 @@ app.delete("/delete-account", async (req, res) => {
       return res.status(404).json({ message: 'Unauthorized request.' });
     }
 
-    console.log(user_admin.admin, ">>>>>> admin")
+    console.log(user_admin.admin, ">>>>>> admin");
     // Check if the user is admin or not
     if (user_admin.admin !== 'admin') {
       return res
@@ -2054,8 +2054,14 @@ app.get("/TotalPriceOut", async (req, res) => {
 });
 
 const FormDiscount = new mongoose.Schema({
-  MintValue: String,
-  VeryGood: String,
+  MintValue: {
+    type: Number,
+    default: 50
+  },
+  VeryGood: {
+    type: Number,
+    default: 55
+  }
 });
 
 // Create a model based on the schema
@@ -2064,26 +2070,14 @@ const FormDiscountValue = mongoose.model("DiscountValue", FormDiscount);
 app.put("/DiscountValue", async (req, res) => {
 
   try {
-    const headers = req.headers;
     const token = req.headers?.authorization?.split(" ")[1];
     const isAdmin = await isAdminUser(token, res);
     if (!isAdmin) {
-        return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    // Convert the headers object to an array of key-value pairs
-    const headerEntries = Object.entries(headers);
-
-    // Log all headers to the console
-    console.log('All Headers:');
-    for (const [key, value] of headerEntries) {
-      console.log(`${key}: ${value}`);
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     const user_id = req.header('user-id');
     const user_admin = await UserData.findById(user_id);
-    console.log("Admin >>> ",user_admin);
-    console.log("User ID >>> ",user_id);
 
     // Check if the user is admin or not
     if (user_admin.admin !== 'admin') {
@@ -2092,7 +2086,7 @@ app.put("/DiscountValue", async (req, res) => {
         .json({ message: "Not allowed to delete account", email });
     }
     // Extract data from the request body
-    const { MintValue, VeryGood, filter } = req.body;
+    const { MintValue, VeryGood } = req.body;
 
     // Define the update operation using $set
     const updateOperation = {
@@ -2100,7 +2094,9 @@ app.put("/DiscountValue", async (req, res) => {
     };
 
     // Update the matching documents using updateMany
-    const result = await FormDiscountValue.updateMany(filter, updateOperation);
+
+    const result = await FormDiscountValue.updateMany({}, updateOperation);
+    console.log(result);
 
     return res.status(200).json({
       message: "Data updated successfully",
@@ -2322,7 +2318,7 @@ app.get("/export/csv/email", async (req, res) => {
       },
     ];
 
-    console.log("csvFields", csvFields)
+    console.log("csvFields", csvFields);
 
     const emailData = users
       .flatMap((user) =>

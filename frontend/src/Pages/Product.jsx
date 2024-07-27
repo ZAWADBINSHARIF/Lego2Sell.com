@@ -15,7 +15,7 @@ const Product = () => {
   const SearchValue = location.state && location.state.e;
   const navigation = useNavigate();
   const [isFormValid, setIsFormValid] = useState(true);
-  const [DiscountValue, setDiscountValue] = useState();
+  const [DiscountValue, setDiscountValue] = useState(null);
   const [setCondtinmessage, setSetCondtinmessage] = useState(true);
 
   useEffect(() => {
@@ -25,7 +25,12 @@ const Product = () => {
         const response = await axios.get(
           `${baseUrl}/DiscountValueGet`
         );
-        setDiscountValue(response.data);
+        console.log(response);
+        if (response.data.length > 0) {
+          setDiscountValue(response.data);
+        } else {
+          setDiscountValue(null);
+        }
       } catch (error) {
         // console.log(error)
       }
@@ -91,7 +96,7 @@ const Product = () => {
       console.error(error);
     }
     // console.log(formData)
-
+    console.log({ SearchValue, condition, productCondition });
     navigation(`/selling-basket/`, {
       state: { SearchValue, condition, productCondition },
     });
@@ -233,11 +238,10 @@ const Product = () => {
                   {ConditionData.map((value, index) => {
                     return (
                       <label
-                        className={` ${
-                          productCondition === value.title
-                            ? "border-2 border-blue-500 rounded-xl "
-                            : ""
-                        }`}
+                        className={` ${productCondition === value.title
+                          ? "border-2 border-blue-500 rounded-xl "
+                          : ""
+                          }`}
                       >
                         <img
                           className={`md:w-[100px] cursor-pointer object-contain h-[70px]`}
@@ -251,7 +255,7 @@ const Product = () => {
                               ...formData,
                               SetCondition: value.Discount,
                             });
-
+                            console.log(value);
                             setCondition(value.Discount);
                             setProductCondition(value.title);
                           }}

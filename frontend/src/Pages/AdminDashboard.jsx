@@ -1,42 +1,42 @@
-import React, { useState, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import axios from "axios"
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import CryptoJS from 'crypto-js';
 import baseUrl from "../context/baseUrl";
 
 const AdminDashboard = () => {
-  const navigation = useNavigate()
-  const [orders, setOrders] = useState([])
-  const [MintValue, setMintValue] = useState()
-  const [VeryGood, setVeryGoodValue] = useState()
-  const [TotalOffer, setTotalOffer] = useState()
-  const [error, setError] = useState(null)
-  const [MintMessage, setMintMessage] = useState()
-  const storedUserId = localStorage.getItem("userId")
+  const navigation = useNavigate();
+  const [orders, setOrders] = useState([]);
+  const [MintValue, setMintValue] = useState();
+  const [VeryGood, setVeryGoodValue] = useState();
+  const [TotalOffer, setTotalOffer] = useState();
+  const [error, setError] = useState(null);
+  const [MintMessage, setMintMessage] = useState();
+  const storedUserId = localStorage.getItem("userId");
   // console.log(MintMessage)
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       const response = await axios.put(
         `${baseUrl}/DiscountValue`,
         {
           MintValue,
           VeryGood,
-        },{
-          headers: {
-            "Content-Type": "application/json",
-            "user-id": storedUserId,
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        }, {
+        headers: {
+          "Content-Type": "application/json",
+          "user-id": storedUserId,
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
 
-          },
-        }
-      )
-      setMintMessage(response.data.message)
-      // console.log("Data saved successfully:", response.data.message)
+        },
+      }
+      );
+      setMintMessage(response.data.message);
+      console.log("Data saved successfully:", response.data.message);
     } catch (error) {
-      console.error("Error saving data:", error)
+      console.error("Error saving data:", error);
     }
-  }
+  };
 
   useEffect(() => {
     async function fetchOrders() {
@@ -55,16 +55,16 @@ const AdminDashboard = () => {
             "Content-Type": "application/json",
             "source": encryptedData,
           },
-        })
-        setOrders(response.data)
+        });
+        setOrders(response.data);
       } catch (error) {
-        setError("Error fetching orders")
+        setError("Error fetching orders");
       }
     }
 
-    fetchOrders()
-  }, [])
-  const [CustomerOrder, setCustomerOrder] = useState()
+    fetchOrders();
+  }, []);
+  const [CustomerOrder, setCustomerOrder] = useState();
 
   const fetchInfo = () => {
 
@@ -82,43 +82,43 @@ const AdminDashboard = () => {
       },
     })
       .then((res) => res.json())
-      .then((d) => setCustomerOrder(d))
-  }
+      .then((d) => setCustomerOrder(d));
+  };
   useEffect(() => {
-    fetchInfo()
-  }, [])
+    fetchInfo();
+  }, []);
   // console.log("log", CustomerOrder.length)
   const countUnpaidOrders = (orders) => {
     return orders?.reduce((count, order) => {
       if (order.Status !== "Paid") {
-        return count + 1
+        return count + 1;
       }
-      return count
-    }, 0)
-  }
-  let NumberTotal = 0
+      return count;
+    }, 0);
+  };
+  let NumberTotal = 0;
   const calculateTotalPrice = () => {
-    let total = 0
+    let total = 0;
     orders.forEach((user) => {
-      NumberTotal = countUnpaidOrders(user.Order)
+      NumberTotal = countUnpaidOrders(user.Order);
       user.Order.forEach((order) => {
         if (order.Status === "Paid") {
-          total += order.Price
+          total += order.Price;
         }
-      })
-    })
-    return total.toFixed(2)
-  }
+      });
+    });
+    return total.toFixed(2);
+  };
   // console.log("fix")
-  let ordersWithoutPaidOrRejected = 0
+  let ordersWithoutPaidOrRejected = 0;
 
   orders.forEach((user) => {
     user.Order.forEach((order) => {
       if (order.Status !== "Paid" && order.Status !== "Rejected") {
-        ordersWithoutPaidOrRejected++
+        ordersWithoutPaidOrRejected++;
       }
-    })
-  })
+    });
+  });
 
   // console.log(
   //   "Number of orders without Paid or Rejected status:",
@@ -194,9 +194,9 @@ const AdminDashboard = () => {
             <div className="lg:px-0 2xl:px-44 lg:flex-row flex-col w-full items-center justify-around py-6 flex px-0">
               <div className="flex flex-wrap mb-12 flex-col lg:space-y-0 space-y-8 justify-between items-center">
                 <div className="border-3 gap-3 flex items-center border-blue-500 rounded-full 2xl:w-[80%]  justify-center lg:py-6 py-4 px-6 lg:px-4"
-                style={{
-                  border: '3px solid #3B82F6'
-                }}
+                  style={{
+                    border: '3px solid #3B82F6'
+                  }}
                 >
                   <img
                     className="w-16"
@@ -226,7 +226,7 @@ const AdminDashboard = () => {
               <div className="flex flex-wrap  mb-12 flex-col lg:space-y-0 space-y-8 justify-between items-center">
                 <div className="border-3 gap-3 flex items-center border-green-500 2xl:w-[80%] justify-center rounded-full py-6 px-14" style={{
                   border: '3px solid #10B981'
-          
+
                 }}>
                   <img
                     className="w-16"
@@ -256,9 +256,9 @@ const AdminDashboard = () => {
               </div>
               <div className="flex flex-wrap mb-12  flex-col lg:space-y-0 space-y-8 justify-between items-center">
                 <div className="border-3 gap-3 flex items-center border-yellow-500 2xl:w-[80%] justify-center rounded-full py-6 px-12"
-                style={{
-                  border: '3px solid #FBBF24'
-                }}
+                  style={{
+                    border: '3px solid #FBBF24'
+                  }}
                 >
                   <img
                     className="w-16"
@@ -295,19 +295,20 @@ const AdminDashboard = () => {
 
 
 
-              <div className="flex flex-wrap mb-12 flex-col lg:space-y-0 space-y-8 justify-between items-center" style={{ marginTop: '20px',
-             }}>
+              <div className="flex flex-wrap mb-12 flex-col lg:space-y-0 space-y-8 justify-between items-center" style={{
+                marginTop: '20px',
+              }}>
 
                 <div className="border-3 gap-3 flex items-center border-green-500 2xl:w-[80%] justify-center rounded-full py-6 px-14"
-                style={{
-                  border: '3px solid #10B981'
-                }}
+                  style={{
+                    border: '3px solid #10B981'
+                  }}
                 >
-                <div className="flex items-center flex-col">
+                  <div className="flex items-center flex-col">
                     <h4 className="text-lg font-semibold">Blogs</h4>
-                    
+
                   </div>
-                 
+
                 </div>
                 <Link
                   to={"/userblogs"}
@@ -331,7 +332,7 @@ const AdminDashboard = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AdminDashboard
+export default AdminDashboard;

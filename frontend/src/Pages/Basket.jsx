@@ -1,25 +1,25 @@
-import { Loader, Modal } from "@mantine/core"
-import { useDisclosure } from "@mantine/hooks"
-import React, { useEffect, useState } from "react"
-import { Helmet } from "react-helmet"
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import baseUrl from "../context/baseUrl"
+import { Loader, Modal } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import baseUrl from "../context/baseUrl";
 
 const Basket = () => {
-  const location = useLocation()
-  const navigation = useNavigate()
+  const location = useLocation();
+  const navigation = useNavigate();
   // const data = location.state && location.state.data
-  const SearchValue = location.state.SearchValue
-  const condition = location.state.condition
-  const productCondition = location.state.productCondition
-  const [price, setPrice] = useState(null)
+  const SearchValue = location.state.SearchValue;
+  const condition = location.state.condition;
+  const productCondition = location.state.productCondition;
+  const [price, setPrice] = useState(null);
   // console.log("price", price)
-  const storedUserId = localStorage.getItem("userId")
-  const [data, setData] = useState()
-  const route = location.pathname
-  const [opened, { open, close }] = useDisclosure(false)
-  const BasketValue = 1
-  // console.log(data.length)
+  const storedUserId = localStorage.getItem("userId");
+  const [data, setData] = useState();
+  const route = location.pathname;
+  const [opened, { open, close }] = useDisclosure(false);
+
+  console.log(location.state.condition);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,10 +29,10 @@ const Basket = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ itemCode: SearchValue }),
-        })
+        });
 
-        const data = await response.json()
-        setData(data)
+        const data = await response.json();
+        setData(data);
       } catch (error) {
         // console.log(error)
         // alert("Could not find the LEGO you are looking for.")
@@ -40,10 +40,10 @@ const Basket = () => {
         // console.log("Complete")
         // Set loading state back to false
       }
-    }
+    };
 
-    fetchData() // Call the fetchData function
-  }, [SearchValue])
+    fetchData(); // Call the fetchData function
+  }, [SearchValue]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -56,36 +56,38 @@ const Basket = () => {
             },
             body: JSON.stringify({ itemCode: SearchValue }),
           }
-        )
+        );
 
-        const priceData = await response.json()
+        const priceData = await response.json();
+        console.log(priceData);
         if (priceData.body.price52 === null) {
-          
-          open(true)
+
+          open(true);
           setTimeout(() => {
-            navigation("/")
-          }, 5000)
+            navigation("/");
+          }, 5000);
         }
-        // console.log(priceData.body)
-        const originalPrice = priceData.body.price.min_price
-        const discountPercentage = condition
-        const discount = originalPrice * (discountPercentage / 100)
-        const discountedPrice = originalPrice - discount
-        setPrice(discountedPrice)
+
+        const originalPrice = priceData.body.price.min_price;
+        const discountPercentage = condition;
+        const discount = originalPrice * (discountPercentage / 100);
+        const discountedPrice = originalPrice - discount;
+        setPrice(discountedPrice);
         // console.log("Discounted price: " + discountedPrice);
-        localStorage.setItem("Price", discountedPrice.toFixed(2))
+        localStorage.setItem("Price", discountedPrice.toFixed(2));
         if (priceData.message === "SUCCESS") {
-          setPrice(discountedPrice)
+          console.log(condition);
+          setPrice(discountedPrice);
         } else {
           // alert("Could not find the LEGO you are looking for.")
         }
       } catch {
         // alert("Could not find the LEGO you are looking for.")
       }
-    }
+    };
 
-    fetchData()
-  }, [SearchValue])
+    fetchData();
+  }, [SearchValue, condition, navigation, open]);
 
   return (
     <div className="lg:px-12 lg:flex-row flex-col px-4 h-[88vh] lg:h-[84vh] space-x-0 lg:space-x-8 items-start flex py-8">
@@ -101,19 +103,19 @@ const Basket = () => {
         />
       </Helmet>
       <div className="border w-full flex-1 py-6 px-4 lg:px-12  border-gray-300 rounded-xl">
-        <Modal opened={opened} onClose={()=>{
-          close()
-          navigation("/")
-        
+        <Modal opened={opened} onClose={() => {
+          close();
+          navigation("/");
+
         }} title="Woops" centered>
           {/* Modal content */}
           <div className="">
-          <img
-                      className="w-full"
-                      src="/Images/SearchErrorMessage.jpg"
-                      alt=""
-                      loading="lazy"
-                    />
+            <img
+              className="w-full"
+              src="/Images/SearchErrorMessage.jpg"
+              alt=""
+              loading="lazy"
+            />
             <p className="text-gray-400 text-base font-normal py-4">
               We are sorry but we can not seem to find a price for that set! If
               you still want to check please contact{" "}
@@ -192,12 +194,12 @@ const Basket = () => {
             </div>
             <button
               onClick={() => {
-                localStorage.setItem("Basket", 1)
-                localStorage.setItem("BasketStatus", "start")
+                localStorage.setItem("Basket", 1);
+                localStorage.setItem("BasketStatus", "start");
                 if (storedUserId === "null" || storedUserId === null) {
                   navigation("/login/", {
                     state: { route, productCondition },
-                  })
+                  });
                 } else {
                   navigation("/check-your-details", {
                     state: {
@@ -207,20 +209,20 @@ const Basket = () => {
                       condition,
                       productCondition,
                     },
-                  })
+                  });
                 }
               }}
               type="button"
               className="hover:scale-[1.05]  transition-all mt-4 w-full text-center lg:ml-0 flex items-center justify-center px-6 lg:px-9 rounded-xl bg-blue-500 hover:bg-white hover:text-black  hover:border font-bold text-[15px] h-[49px] lg:h-[65px]  xl:text-[18px]"
               style={{
-                color:'white',
+                color: 'white',
                 ":hover": {
                   backgroundColor: "white",
                   color: "black",
                 },
-                
+
               }}
-                  
+
             >
               Accept Offer
             </button>
@@ -228,7 +230,7 @@ const Basket = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Basket
+export default Basket;

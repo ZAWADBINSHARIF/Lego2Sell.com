@@ -2279,26 +2279,14 @@ const FormDiscountValue = mongoose.model("DiscountValue", FormDiscount);
 app.put("/DiscountValue", async (req, res) => {
 
   try {
-    const headers = req.headers;
     const token = req.headers?.authorization?.split(" ")[1];
     const isAdmin = await isAdminUser(token, res);
     if (!isAdmin) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    // Convert the headers object to an array of key-value pairs
-    const headerEntries = Object.entries(headers);
-
-    // Log all headers to the console
-    console.log('All Headers:');
-    for (const [key, value] of headerEntries) {
-      console.log(`${key}: ${value}`);
-    }
-
     const user_id = req.header('user-id');
     const user_admin = await UserData.findById(user_id);
-    console.log("Admin >>> ", user_admin);
-    console.log("User ID >>> ", user_id);
 
     // Check if the user is admin or not
     if (user_admin.admin !== 'admin') {
@@ -2307,7 +2295,7 @@ app.put("/DiscountValue", async (req, res) => {
         .json({ message: "Not allowed to delete account", email });
     }
     // Extract data from the request body
-    const { MintValue, VeryGood, filter } = req.body;
+    const { MintValue, VeryGood } = req.body;
 
     // Define the update operation using $set
     const updateOperation = {
@@ -2315,7 +2303,9 @@ app.put("/DiscountValue", async (req, res) => {
     };
 
     // Update the matching documents using updateMany
-    const result = await FormDiscountValue.updateMany(filter, updateOperation);
+
+    const result = await FormDiscountValue.updateMany({}, updateOperation);
+    console.log(result);
 
     return res.status(200).json({
       message: "Data updated successfully",
@@ -2326,6 +2316,19 @@ app.put("/DiscountValue", async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+app.get("/DiscountValueGet", async (req, res) => {
+  try {
+    // Retrieve data from the FormDiscountValue collection
+    const discountValues = await FormDiscountValue.find({}).exec();
+
+    return res.status(200).json(discountValues);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 
 app.get("/DiscountValueGet", async (req, res) => {
   try {
