@@ -342,7 +342,7 @@ const Blog = () => {
                             className="text-[11px] p rounded-full px-[10px] py-1  font-bold text-sm animate-up border-[1px] border-[grey]"
                             style={{
                               color: "black",
-                              fontSize: 9,
+                              fontSize: 13,
                               marginLeft: 15,
                               border: `2px solid ${blog.categoryName?.color}`,
                               borderColor: blog.categoryName?.color,

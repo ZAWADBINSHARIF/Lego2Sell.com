@@ -7,6 +7,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import baseUrl from "../context/baseUrl";
 import { Editor } from '@tinymce/tinymce-react';
+import { toast } from "react-toastify";
 
 const UserBlog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -23,8 +24,8 @@ const UserBlog = () => {
       console.log(editorRef.current.getContent());
     }
   };
+  const navigate = useNavigate();
 
-  
   const [formData, setFormData] = useState({
     userId: storedUserId,
     userName: "test",
@@ -80,7 +81,7 @@ const UserBlog = () => {
   };
 
   const handleEditorChange = (content) => {
-    console.log("Content was updated:", content)
+    console.log("Content was updated:", content);
     setFormData({ ...formData, description: content });
   };
   const handleSubEditorChange = (content) => {
@@ -88,8 +89,6 @@ const UserBlog = () => {
   };
 
   const handleSubmit = async () => {
-    // e.preventDefault();
-   
 
     console.log("set image", formData);
     try {
@@ -113,18 +112,19 @@ const UserBlog = () => {
         .catch((error) => {
           console.error("Error uploading image:", error);
           setLoading(false);
-          alert("Error uploading image");
+          toast.error(error.message);
         });
 
       const updatedBlogs = await axios.get(baseUrl + "/admin/api/blog");
       setBlogs(updatedBlogs.data.data);
       setLoading(false);
-      alert("Data submitted successfully");
+      toast.success("Data submitted successfully");
+      navigate(0);
     } catch (error) {
       setResponse("Error submitting data");
       console.error("Error submitting data:", error);
       setLoading(false);
-      alert("Error submitting data");
+      toast.error("Error submitting data");
     }
   };
 
@@ -145,7 +145,7 @@ const UserBlog = () => {
     try {
       const token = localStorage.getItem("token");
       const apiUrl = baseUrl + "/admin/api/blog/" + blogId;
-      const response = await axios.delete(apiUrl,{
+      const response = await axios.delete(apiUrl, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("Blog deleted successfully:", response.data);
@@ -170,13 +170,6 @@ const UserBlog = () => {
         console.error("Error fetching data:", error);
       });
   }, []);
-
-  useEffect(() => {
-    if (formData.description) {
-      handleSubmit();
-    }
-  }, [formData.description]);
-
 
   return (
     <>
@@ -255,7 +248,7 @@ const UserBlog = () => {
                   className="w-full p-2 border border-gray-300 rounded mt-1"
                 />
               </div>
-              
+
               <div className="mb-4">
                 <label
                   htmlFor="image"
@@ -278,14 +271,14 @@ const UserBlog = () => {
                   Sub Title
                 </label>
                 <div>
-                <input
-                  type="text"
-                  id="subTitle"
-                  name="subTitle"
-                  value={formData.subTitle}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded mt-1"
-                />
+                  <input
+                    type="text"
+                    id="subTitle"
+                    name="subTitle"
+                    value={formData.subTitle}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded mt-1"
+                  />
                 </div>
               </div>
               <div className="mb-6 mt-5">
@@ -326,36 +319,36 @@ const UserBlog = () => {
                   /> */}
                   <Editor
                     name="description"
-      apiKey='j21ua41lr6mtfwtkoqya22hincmd464fz9uviv2k6z633eds'
-      init={{
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight ',
-        tinycomments_mode: 'embedded',
-        tinycomments_author: 'Author name',
-        mergetags_list: [
-          { value: 'First.Name', title: 'First Name' },
-          { value: 'Email', title: 'Email' },
-        ],
-      }}
-              onInit={(evt, editor) => editorRef.current = editor}
-
-      initialValue={formData.description}
-      
-        
-
-    />
-
-
+                    apiKey='j21ua41lr6mtfwtkoqya22hincmd464fz9uviv2k6z633eds'
+                    init={{
+                      plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight ',
+                      tinycomments_mode: 'embedded',
+                      tinycomments_author: 'Author name',
+                      mergetags_list: [
+                        { value: 'First.Name', title: 'First Name' },
+                        { value: 'Email', title: 'Email' },
+                      ],
+                    }}
+                    onInit={(evt, editor) => editorRef.current = editor}
+                    initialValue={formData.description}
+                    onEditorChange={(a, editor) => {
+                      formData.description = a;
+                    }}
+                  />
                 </div>
               </div>
               <button
                 style={{ marginTop: "50px" }}
                 type="submit"
-                onClick={(e)=>{
-                  // handleEditorChange(editorRef.current.getContent())
+                onClick={(e) => {
                   e.preventDefault();
-                  setFormData({ ...formData, description: editorRef.current.getContent() });
-                  // handleSubmit(e)
+
+                  if (formData.description && formData.categoryName.name && formData.title) {
+                    handleSubmit();
+                  } else {
+                    toast.warning("Fill the title and description");
+                  }
                 }}
                 className="w-full bg-blue-500 text-white font-semibold p-2 rounded"
                 disabled={loading} // Disable the button while loading
@@ -363,7 +356,7 @@ const UserBlog = () => {
                 {loading ? "Loading..." : "Submit"}
               </button>
             </form>
-          {/* <button onClick={log}>Log editor content</button> */}
+            {/* <button onClick={log}>Log editor content</button> */}
           </div>
         </div>
 
