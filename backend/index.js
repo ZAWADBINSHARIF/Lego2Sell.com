@@ -212,70 +212,69 @@ app.post('/upload', async (req, res) => {
   }
 });
 
-app.get("/health", async (req, res) => {
-  return res.status(200).json({ message: 'app is healthy' });
-}),
 
-  app.post("/signup", async (req, res) => {
-    try {
-      console.log("test1dsf23g13sd");
-      const { email, password } = req.body;
+app.post("/signup", async (req, res) => {
+  try {
 
-      const encryptedData = req.header('source');
-      // Encryption key (must match the key used for encryption)
-      const encryptionKey = 'legotwosell';
-      const token = jwt.sign(
-        {
-          email: email,
-          // isSeller: user.isSeller,
-        },
-        keysecret
-      );
-      // Decrypt the data
-      const bytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
-      const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+    const { email, password } = req.body;
 
-      // Compare the decrypted data with a known value
-      const expectedData = 'frontend';
+    const encryptedData = req.header('source');
+    // Encryption key (must match the key used for encryption)
+    const encryptionKey = 'legotwosell';
+    const token = jwt.sign(
+      {
+        email: email,
+        // isSeller: user.isSeller,
+      },
+      keysecret
+    );
+    // Decrypt the data
+    const bytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
+    const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
 
-      if (decryptedData !== expectedData) {
-        return res.status(400).json({ message: 'Unauthorized request.' });
-      }
+    // Compare the decrypted data with a known value
+    const expectedData = 'frontend';
 
-      // Generate a unique ID for the user
-      const userId = uuid.v4();
-
-      // Check if the email already exists
-      const existingUser = await UserData.findOne({ email });
-      if (existingUser) {
-        return res
-          .status(409)
-          .json({ message: "Email already registered", email, });
-      }
-
-      // Hash the password using bcryptjs
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      // Create a new user with the generated ID
-      const newUser = new UserData({
-        userId: userId,
-        email,
-        password: hashedPassword,
-        admin: "user",
-      });
-      await newUser.save();
-
-      // Retrieve the _id value of the new user document
-      const newUserId = newUser._id;
-
-      return res
-        .status(201)
-        .json({ message: "Signup successful", userId: newUserId, token: token });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: "Internal Server Error" });
+    if (decryptedData !== expectedData) {
+      return res.status(400).json({ message: 'Unauthorized request.' });
     }
-  });
+
+    // Generate a unique ID for the user
+    const userId = uuid.v4();
+
+    // Check if the email already exists
+    const existingUser = await UserData.findOne({ email });
+    if (existingUser) {
+      return res
+        .status(409)
+        .json({ message: "Email already registered", email, });
+    }
+
+    // Hash the password using bcryptjs
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user with the generated ID
+    const newUser = new UserData({
+      userId: userId,
+      email,
+      password: hashedPassword,
+      admin: "user",
+    });
+    await newUser.save();
+
+    // Retrieve the _id value of the new user document
+    const newUserId = newUser._id;
+
+    return res
+      .status(201)
+      .json({ message: "Signup successful", userId: newUserId, token: token });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+
 app.put("/update-email/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -493,30 +492,16 @@ app.post("/get_Quote/:id", async (req, res) => {
 });
 
 app.post("/MyDetails/:id", async (req, res) => {
+
   try {
     const { id } = req.params;
-    const data = new MyDetails(req.body);
-    const token = req.headers?.authorization?.split(" ")[1];
-
-    // Find the user by token
-    console.log(token);
-    if (!token) return false;
-    const userData = jwt.verify(token, secret);
-    // get all data in userdata
-    if (userData?.email) {
-      const data = await UserData.findOne({ email: userData.email });
-      console.log("data", data, userData.email);
-      if (id !== data._id.toString()) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
-    }
+    const data = await new MyDetails(req.body);
 
     // Find the user details by ID
     const user = await UserData.findById(id);
     if (!user) {
       return res.status(404).json({ message: "User details not found" });
     }
-
     // Update the user details
     user.Mydetails = data;
     await user.save();

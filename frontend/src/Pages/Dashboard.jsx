@@ -1,24 +1,24 @@
-import { Modal, Select } from "@mantine/core"
-import { useDisclosure } from "@mantine/hooks"
-import axios from "axios"
-import React, { useEffect, useState } from "react"
-import OrderCards from "../componet/OrderCards"
-import { Link, Navigate, useLocation, useNavigate, useParams } from "react-router-dom"
-import MyDetails from "../componet/MyDetails"
-import { useForm } from "@mantine/form"
-import ChangePassword from "../componet/ChangePassword"
-import ReactDropdown from "react-dropdown"
-import "react-dropdown/style.css"
-import baseUrl from "../context/baseUrl"
+import { Modal, Select } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import OrderCards from "../componet/OrderCards";
+import { Link, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import MyDetails from "../componet/MyDetails";
+import { useForm } from "@mantine/form";
+import ChangePassword from "../componet/ChangePassword";
+import ReactDropdown from "react-dropdown";
+import "react-dropdown/style.css";
+import baseUrl from "../context/baseUrl";
 const Dashboard = (props) => {
-  const [orderitems, setOrderitems] = useState()
-  const navigation = useNavigate()
-  const location = useLocation()
-  const [totalPrice, setTotalPrice] = useState(0)
+  const [orderitems, setOrderitems] = useState();
+  const navigation = useNavigate();
+  const location = useLocation();
+  const [totalPrice, setTotalPrice] = useState(0);
   // console.log(orderitems)
-  const storedUserId = localStorage.getItem("userId")
+  const storedUserId = localStorage.getItem("userId");
   useEffect(() => {
-    if(storedUserId == 'null') {
+    if (storedUserId == 'null') {
       navigation("/login");
     }
 
@@ -26,61 +26,61 @@ const Dashboard = (props) => {
       try {
         const response = await axios.get(
           `${baseUrl}/Getorder/${storedUserId}`
-        )
+        );
 
         if (response.status === 200) {
-          const { orders } = response.data
+          const { orders } = response.data;
           // console.log("User orders:", orders)
-          setOrderitems(orders)
+          setOrderitems(orders);
           // Process the orders data as needed
         } else {
-          throw new Error("Error: " + response.status)
+          throw new Error("Error: " + response.status);
         }
       } catch (error) {
-        console.error("An error occurred:", error)
+        console.error("An error occurred:", error);
         // Handle the error as needed
       }
-    }
+    };
 
-    fetchUserOrders()
-  }, [storedUserId, setOrderitems])
-  const [getMyDetails, setGetMyDetails] = useState()
+    fetchUserOrders();
+  }, [storedUserId, setOrderitems, navigation]);
+  const [getMyDetails, setGetMyDetails] = useState();
   // console.log("Gokil", getMyDetails?.paymentMethod)
   useEffect(() => {
     const fetchUserOrders = async () => {
       try {
         const response = await axios.get(
           `${baseUrl}/Mydetails/${storedUserId}`
-        )
+        );
 
         if (response.status === 200) {
-          const { Mydetails } = response.data
+          const { Mydetails } = response.data;
           // console.log("User orders:9999999", Mydetails)
-          setGetMyDetails(Mydetails[0])
+          setGetMyDetails(Mydetails[0]);
           // Process the orders data as needed
         } else {
-          throw new Error("Error: " + response.status)
+          throw new Error("Error: " + response.status);
         }
       } catch (error) {
-        console.error("An error occurred:", error)
+        console.error("An error occurred:", error);
         // Handle the error as needed
       }
-    }
+    };
 
-    fetchUserOrders()
-  }, [storedUserId, setGetMyDetails])
+    fetchUserOrders();
+  }, [storedUserId, setGetMyDetails]);
   useEffect(() => {
     if (orderitems) {
       const totalPrice = orderitems.reduce(
         (sum, value) => sum + (value?.Price || 0),
         0
-      )
-      setTotalPrice(totalPrice)
-      localStorage.setItem("totalPrice", totalPrice.toFixed(2))
+      );
+      setTotalPrice(totalPrice);
+      localStorage.setItem("totalPrice", totalPrice.toFixed(2));
     }
-  }, [orderitems])
+  }, [orderitems]);
 
-  const [SidebarActive, setSidebarActive] = useState(0)
+  const [SidebarActive, setSidebarActive] = useState(0);
   const DashboardSidebar = [
     {
       title: "Dashboard",
@@ -90,20 +90,20 @@ const Dashboard = (props) => {
     { title: "Marketing Preferences" },
     { title: "Change password" },
     { title: "Logout" },
-  ]
+  ];
   const form = useForm({
     initialValues: {
       MarketingPreferences: "",
     },
 
     validate: {},
-  })
+  });
   // const data = location.state && location.state.data
 
-  const [MarketingPreferencesStatus, setMarketingPreferencesStatus] = useState()
+  const [MarketingPreferencesStatus, setMarketingPreferencesStatus] = useState();
   const [marketper, setMarketper] = useState(
     getMyDetails?.Marketingpreferences.value
-  )
+  );
   // console.log("go", getMyDetails?.Marketingpreferences.value)
   const handleUpdateMarketingPreferences = async () => {
     try {
@@ -112,14 +112,14 @@ const Dashboard = (props) => {
         {
           Marketingpreferences: marketper.label,
         }
-      )
+      );
       // console.log(response.data)
-      setMarketingPreferencesStatus(response.data.message) // Assuming the server sends a response message
+      setMarketingPreferencesStatus(response.data.message); // Assuming the server sends a response message
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-  const options = ["Yes", "No"]
+  };
+  const options = ["Yes", "No"];
   return (
     <div>
       <section className="overflow-y-scroll  lg:flex-row flex-col flex ">
@@ -131,7 +131,7 @@ const Dashboard = (props) => {
                   onClick={() => setSidebarActive(index)}
                   class="lg:block items-start flex last:pb-0 relative"
                   style={{
-                    paddingBottom:'1.25rem '
+                    paddingBottom: '1.25rem '
                   }}
                 >
                   {SidebarActive === index && (
@@ -159,24 +159,23 @@ const Dashboard = (props) => {
                     onClick={
                       value?.title === "Logout"
                         ? () => {
-                            localStorage.setItem("userId", "null")
-                            localStorage.setItem("Basket", "0")
-                            navigation("/")
-                            window.location.reload()
-                          }
+                          localStorage.setItem("userId", "null");
+                          localStorage.setItem("Basket", "0");
+                          navigation("/");
+                          window.location.reload();
+                        }
                         : ""
                     }
                     style={{
                       fontSize: "1.125rem",
-                      fontWeight:700
+                      fontWeight: 700
                     }}
                     title={value?.title}
-                    class={` text-[14px] lg:text-lg lg:bg-transparent px-4 font-medium lg:font-bold lg:px-0 py-1 lg:py-0 rounded-full bg-blue-500 ${
-                      SidebarActive === index
+                    class={` text-[14px] lg:text-lg lg:bg-transparent px-4 font-medium lg:font-bold lg:px-0 py-1 lg:py-0 rounded-full bg-blue-500 ${SidebarActive === index
                         ? "lg:text-blue-500 text-black"
                         : "lg:text-black text-black"
-                    } `}
-                    
+                      } `}
+
                   >
                     {value?.title}
                   </button>
@@ -217,19 +216,18 @@ const Dashboard = (props) => {
                     onClick={
                       value?.title === "Logout"
                         ? () => {
-                            localStorage.setItem("userId", "null")
-                            localStorage.setItem("Basket", "0")
-                            navigation("/")
-                            window.location.reload()
-                          }
+                          localStorage.setItem("userId", "null");
+                          localStorage.setItem("Basket", "0");
+                          navigation("/");
+                          window.location.reload();
+                        }
                         : console.log("demo", value)
                     }
                     title={value?.title}
-                    class={` text-[14px] w-max flex lg:text-lg lg:bg-transparent px-4 font-medium lg:font-bold lg:px-0 py-1 lg:py-0 rounded-full bg-blue-500 ${
-                      SidebarActive === index
+                    class={` text-[14px] w-max flex lg:text-lg lg:bg-transparent px-4 font-medium lg:font-bold lg:px-0 py-1 lg:py-0 rounded-full bg-blue-500 ${SidebarActive === index
                         ? "lg:text-blue-500 text-white"
                         : "lg:text-black text-white"
-                    } `}
+                      } `}
                   >
                     {value?.title}
                   </button>
@@ -245,13 +243,13 @@ const Dashboard = (props) => {
           {SidebarActive === 0 && (
             <div className="w-full lg:pl-20 py-12 lg:py-24">
               <h1 className="text-3xl lg:text-4xl font-extrabold h1 mb-6" style={{
-                fontSize:'2.25rem',
-                fontWeight:800
+                fontSize: '2.25rem',
+                fontWeight: 800
               }}>
                 My dashboard
               </h1>
               <p className="mb-8 text-[#373845] font-bold" style={{
-                fontWeight:700
+                fontWeight: 700
               }}>
                 Packages you're sending
               </p>
@@ -266,8 +264,8 @@ const Dashboard = (props) => {
                       "Received",
                       "Checking",
                       "Accepted",
-                    ]
-                    return validStatuses.includes(value.Status)
+                    ];
+                    return validStatuses.includes(value.Status);
                   })
                   .map((value, index) => (
                     <OrderCards
@@ -298,8 +296,8 @@ const Dashboard = (props) => {
                   <li className="relative">
                     <button
                       onClick={() => {
-                        localStorage.setItem("userId", "null")
-                        navigation("/")
+                        localStorage.setItem("userId", "null");
+                        navigation("/");
                       }}
                       className="font-bold flex justify-center w-full items-center text-[#E52D3B] cursor-pointer h-[49px]"
                     >
@@ -326,7 +324,7 @@ const Dashboard = (props) => {
                     // console.log(value.Status === "paid")
                     return (
                       value.Status === "Paid" || value.Status === "Rejected"
-                    )
+                    );
                   })
                   .map((value, index) => (
                     <OrderCards
@@ -422,7 +420,7 @@ const Dashboard = (props) => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

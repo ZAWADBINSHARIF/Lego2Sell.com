@@ -5,36 +5,36 @@ import {
   Radio,
   Select,
   TextInput,
-} from "@mantine/core"
-import { useForm } from "@mantine/form"
-import React, { useEffect, useState } from "react"
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import axios from "axios"
-import PasswordStrengthMeter from "./Password"
-import Country from "../componet/Country"
-import CountryCity from "../componet/Country"
-import { Helmet } from "react-helmet"
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import PasswordStrengthMeter from "./Password";
+import Country from "../componet/Country";
+import CountryCity from "../componet/Country";
+import { Helmet } from "react-helmet";
 import CryptoJS from 'crypto-js';
-import baseUrl from "../context/baseUrl"
+import baseUrl from "../context/baseUrl";
 
 const SignUpForm = () => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [repeatpassword, setRepeatpassword] = useState()
-  const navigation = useNavigate()
-  const location = useLocation()
-  const isLogin = location.state?.isLogin ?? ""
-  const productCondition = location.state?.productCondition
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatpassword, setRepeatpassword] = useState();
+  const navigation = useNavigate();
+  const location = useLocation();
+  const isLogin = location.state?.isLogin ?? "";
+  const productCondition = location.state?.productCondition;
 
-  const [Marketingpreferences, setMarketingpreferences] = useState(false)
+  const [Marketingpreferences, setMarketingpreferences] = useState(false);
 
-  const [searchValue, onSearchChange] = useState("")
-  const [selectedCoutry, setSelectedCoutry] = useState("")
-  const [selectedCity, setSelectedCity] = useState("london")
+  const [searchValue, onSearchChange] = useState("");
+  const [selectedCoutry, setSelectedCoutry] = useState("");
+  const [selectedCity, setSelectedCity] = useState("london");
 
-  const [selectedState, setSelectedState] = useState("")
-  const [PaymentDetails, setPaymentDetails] = useState("Paypal")
-  const [isTerm, setIsTerm] = useState()
+  const [selectedState, setSelectedState] = useState("");
+  const [PaymentDetails, setPaymentDetails] = useState("Paypal");
+  const [isTerm, setIsTerm] = useState();
   const form = useForm({
     initialValues: {
       email: "",
@@ -76,7 +76,7 @@ const SignUpForm = () => {
 
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
-  })
+  });
 
   const handleSubmit = async (values) => {
     try {
@@ -100,7 +100,7 @@ const SignUpForm = () => {
         TermsCheck: form.values.TermsCheck,
         Marketingpreferences: Marketingpreferences === true ? "Yes" : "No",
         Postcode: form.values.Postcode,
-      }
+      };
 
       // Data to encrypt
       const sensitiveData = 'frontend';
@@ -116,53 +116,57 @@ const SignUpForm = () => {
           "source": encryptedData,
         },
         body: JSON.stringify({ email: form.values.email, password }),
-      })
+      });
       if (!response.ok) {
-        throw new Error("Error: " + response.status)
+        throw new Error("Error: " + response.status);
       }
 
       // console.log("workingsdsd", response1.data)
       // Sign-up successful
-      const responseData = await response.json()
-      const userId = responseData.userId
-      const token = responseData?.token
+      const responseData = await response.json();
+      const userId = responseData.userId;
+      const token = responseData?.token;
 
-      localStorage?.setItem("token", token)
+      localStorage?.setItem("token", token);
 
-      // Reset form inputs
-      setEmail("")
-      setPassword("")
-      const response1 = await axios.post(
+      const res = await axios.post(
         `${baseUrl}/MyDetails/${userId}`,
         payload
-      )
-      localStorage.setItem("userId", userId)
+      );
+
+      console.log(res);
+
+      localStorage.setItem("userId", userId);
       // console.log("Sign-up successful User ID:", userId)
       if (isLogin === "/selling-basket/") {
-        navigation(`/check-your-details`, { state: { productCondition } })
-        window.location.reload()
+        navigation(`/check-your-details`, { state: { productCondition } });
+        window.location.reload();
       } else {
-        navigation(`/`)
+        navigation(`/`);
       }
       // Navigate to another route
       try {
         const response = await fetch(
           `${baseUrl}/Mydetails/${userId}`
-        )
-        const jsonData = await response.json()
+        );
+        const jsonData = await response.json();
         // console.log(jsonData.Mydetails[0])
       } catch (error) {
-        console.error("Error fetching data:", error)
+        console.error("Error fetching data:", error);
       }
     } catch (error) {
-      console.error("An error occurred:", error)
+      console.error("An error occurred:", error);
       // Handle the error as needed
     }
 
+    // Reset form inputs
+    setEmail("");
+    setPassword("");
+
     // setFormData(values)
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    window.scrollTo({ top: 0, behavior: "smooth" });
     // nextStep()
-  }
+  };
 
   return (
     <div className="flex w-full px-6 items-center justify-center flex-col">
@@ -311,20 +315,18 @@ const SignUpForm = () => {
                 >
                   <Group mt="xs">
                     <label
-                      className={` ${
-                        PaymentDetails === "BankTransfer"
-                          ? "border-2 border-blue-500"
-                          : ""
-                      } flex items-center gap-4 border rounded-xl px-8 py-7`}
+                      className={` ${PaymentDetails === "BankTransfer"
+                        ? "border-2 border-blue-500"
+                        : ""
+                        } flex items-center gap-4 border rounded-xl px-8 py-7`}
                     >
                       <Radio value="BankTransfer" label="Bank Transfer" />
                     </label>
                     <label
-                      className={`${
-                        PaymentDetails === "Paypal"
-                          ? "border-2 border-blue-500"
-                          : ""
-                      } flex items-center gap-4 border rounded-xl px-8 py-6`}
+                      className={`${PaymentDetails === "Paypal"
+                        ? "border-2 border-blue-500"
+                        : ""
+                        } flex items-center gap-4 border rounded-xl px-8 py-6`}
                     >
                       <Radio value="Paypal" />
                       <img
@@ -499,7 +501,7 @@ const SignUpForm = () => {
                   {/* <input type="checkbox" className="mr-3" defaultValue={1} />I */}
                   <Checkbox
                     onChange={(e) => setIsTerm(e.target.checked)}
-                    // {...form.getInputProps("TermsCheck")}
+                  // {...form.getInputProps("TermsCheck")}
                   />
                   agree to the
                   <Link
@@ -517,11 +519,10 @@ const SignUpForm = () => {
                 <button
                   disabled={!isTerm || password !== repeatpassword}
                   type="submit"
-                  className={`${
-                    !isTerm || password !== repeatpassword
-                      ? "cursor-not-allowed bg-gray-300"
-                      : "bg-blue-500"
-                  } text-white  rounded-xl h-[60px] lg:h-[80px] w-full flex items-center justify-center font-bold text-lg`}
+                  className={`${!isTerm || password !== repeatpassword
+                    ? "cursor-not-allowed bg-gray-300"
+                    : "bg-blue-500"
+                    } text-white  rounded-xl h-[60px] lg:h-[80px] w-full flex items-center justify-center font-bold text-lg`}
                 >
                   Register
                 </button>
@@ -531,7 +532,7 @@ const SignUpForm = () => {
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default SignUpForm
+export default SignUpForm;
