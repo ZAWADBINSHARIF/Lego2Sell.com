@@ -67,8 +67,6 @@ const SignUpForm = () => {
         value < 2 ? "LastName must have at least 2 letters" : null,
       title: (value) =>
         value < 2 ? "title must have at select One Option" : null,
-      Telephone: (value) =>
-        value < 2 ? "Telephone must have at least 2 letters" : null,
       StreetAddress1: (value) =>
         value < 2 ? "StreetAddress1 must have at least 2 letters" : null,
       StreetAddress2: (value) =>
@@ -241,7 +239,6 @@ const SignUpForm = () => {
           </div>
           <div class=" py-3">
             <TextInput
-              withAsterisk
               label="Telephone"
               placeholder="Telephone"
               {...form.getInputProps("Telephone")}
@@ -466,14 +463,14 @@ const SignUpForm = () => {
                 <input
                   value={repeatpassword}
                   onChange={(e) => setRepeatpassword(e.target.value)}
-                  placeholder="repeatpassword"
+                  placeholder="Repeat password"
                   className="py-4 px-6 border rounded-xl w-full"
                   // {...form.getInputProps("password")}
                   type="password"
                 />
                 {password !== repeatpassword && (
                   <p className="py-2 text-red-500">
-                    Repeat Password Must Be Some
+                    Repeat Password Must Be Same
                   </p>
                 )}
               </div>

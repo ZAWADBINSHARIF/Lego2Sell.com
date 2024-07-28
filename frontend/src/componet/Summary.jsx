@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { Checkbox, Group, Loader, Radio } from "@mantine/core"
-import axios from "axios"
-import { Country, State, City } from "country-state-city"
-import { Helmet } from "react-helmet"
-import baseUrl from "../context/baseUrl"
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Checkbox, Group, Loader, Radio } from "@mantine/core";
+import axios from "axios";
+import { Country, State, City } from "country-state-city";
+import { Helmet } from "react-helmet";
+import baseUrl from "../context/baseUrl";
 const Summary = ({
   SearchValue,
   condition,
@@ -26,15 +26,15 @@ const Summary = ({
   //     hour12: true,
   //   })
   // )
-  const price = localStorage.getItem("Price")
+  const price = localStorage.getItem("Price");
   // console.log("SearchValue", SearchValue)
-  const navigate = useNavigate()
-  const [sendMethod, setSendMethod] = useState()
-  const [acceptOffer, setAcceptOffer] = useState()
-  const [details, setDetails] = useState()
+  const navigate = useNavigate();
+  const [sendMethod, setSendMethod] = useState();
+  const [acceptOffer, setAcceptOffer] = useState();
+  const [details, setDetails] = useState();
   // console.log(details, "demo111111")
-  const [data, setData] = useState(false)
-  const [dashPattern, setDashPattern] = useState()
+  const [data, setData] = useState(false);
+  const [dashPattern, setDashPattern] = useState();
   // console.log(new Date().toDateString())
   const payload = {
     Deliverymethod: sendMethod,
@@ -46,83 +46,83 @@ const Summary = ({
     ProductImg: data?.body?.image_url,
     timestamp: new Date(),
     setCondition: productCondition,
-  }
-  const [orderitems, setOrderitems] = useState()
+  };
+  const [orderitems, setOrderitems] = useState();
   // console.log("demo111", orderitems)
   useEffect(() => {
     async function fetchOrders() {
       try {
         const response = await axios.get(
           `${baseUrl}/Getorder/${storedUserId}`
-        )
-        setOrderitems(response.data)
+        );
+        setOrderitems(response.data);
       } catch (error) {
         // setError("Error fetching orders")
         // console.log("Error fetching orders")
       }
     }
 
-    fetchOrders()
-  }, [])
+    fetchOrders();
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
           `${baseUrl}/Mydetails/${storedUserId}`
-        )
-        setDetails(response.data.Mydetails[0])
+        );
+        setDetails(response.data.Mydetails[0]);
         const response1 = await fetch(`${baseUrl}/find-lego`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ itemCode: SearchValue }),
-        })
+        });
 
-        const data = await response1.json()
+        const data = await response1.json();
         // console.log("Data", data)
         // localStorage.setItem("data", data)
         if (data.message === "SUCCESS") {
-          setData(data)
+          setData(data);
         } else {
           // console.log("error")
           // alert("Could not find the LEGO you are looking for.")
         }
       } catch (error) {
-        console.error("An error occurred:", error)
+        console.error("An error occurred:", error);
         // Handle the error as needed
       }
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       const response = await axios.post(
         `${baseUrl}/Getorder/${storedUserId}`,
         payload
-      )
-      const offerId = response.data.offerId
-      localStorage.setItem("BasketStatus", "complete")
+      );
+      const offerId = response.data.offerId;
+      localStorage.setItem("BasketStatus", "complete");
       navigate("/success", {
         state: { data, price, SearchValue, condition, offerId },
-      })
+      });
       // localStorage.setItem("Basket", "")
-      window.scrollTo({ top: 0, behavior: "smooth" })
+      window.scrollTo({ top: 0, behavior: "smooth" });
       // console.log("workingsdsd", response.data.offerId)
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
 
     if (window.innerWidth <= 768) {
       // Scroll to the top of the page with a smooth animation
       if (window.innerWidth <= 768) {
         // Scroll to the top of the page using the scrollTo() method
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
       }
     }
-  }
+  };
 
   const handleSearch = async () => {
     try {
@@ -132,14 +132,14 @@ const Summary = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ itemCode: SearchValue }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
       // console.log("Data", data)
       // localStorage.setItem("data", data)
       // localStorage.setItem("SearchValue", e)
       if (data.message === "SUCCESS") {
-        setDashPattern(data)
+        setDashPattern(data);
       } else {
         // console.log("error")
         // alert("Could not find the LEGO you are looking for.")
@@ -150,7 +150,7 @@ const Summary = ({
     } finally {
       // console.log("complete") // Set loading state back to false
     }
-  }
+  };
   return (
     <>
       <Helmet>
@@ -176,7 +176,7 @@ const Summary = ({
               Download)
             </p>
             <p className="text-xs mb-6 font-medium text-gray-500">
-            Purchase Your Postage (refunded up to £2.49 on all sets we accept)
+              Purchase Your Postage (refunded up to £2.49 on all sets we accept)
             </p>
 
             {/* <p className="text-gray-500 py-1">Select your preferred method*</p> */}
@@ -264,11 +264,9 @@ const Summary = ({
                     <div className="flex items-center py-1 gap-4">
                       <h3 className="text-base font-semibold">Sort Code:</h3>
                       <h6 className="text-base">
-                        {` ${
-                          details?.sortCode1 ? details?.sortCode1 : "No"
-                        } -   ${
-                          details?.sortCode2 ? details?.sortCode2 : "No"
-                        } -  ${details?.sortCode3 ? details?.sortCode3 : "No"}`}
+                        {` ${details?.sortCode1 ? details?.sortCode1 : "No"
+                          } -   ${details?.sortCode2 ? details?.sortCode2 : "No"
+                          } -  ${details?.sortCode3 ? details?.sortCode3 : "No"}`}
                       </h6>
                     </div>
 
@@ -368,11 +366,10 @@ const Summary = ({
                 onClick={handleSubmit}
                 disabled={!acceptOffer}
                 type="button"
-                className={` hover:scale-[1.05] ${
-                  acceptOffer
+                className={` hover:scale-[1.05] ${acceptOffer
                     ? "bg-blue-500 rounded-xl "
                     : "bg-gray-400 rounded-xl  cursor-not-allowed"
-                } transition-all mt-4 w-full text-center lg:ml-0 flex items-center justify-center px-6 lg:px-9 bg-blue-500 hover:bg-white hover:text-black  hover:border text-white font-bold text-[15px] h-[49px] lg:h-[65px]  xl:text-[18px]`}
+                  } transition-all mt-4 w-full text-center lg:ml-0 flex items-center justify-center px-6 lg:px-9 bg-blue-500 hover:bg-white hover:text-black  hover:border text-white font-bold text-[15px] h-[49px] lg:h-[65px]  xl:text-[18px]`}
               >
                 Complete Offer
               </button>
@@ -381,7 +378,7 @@ const Summary = ({
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Summary
+export default Summary;

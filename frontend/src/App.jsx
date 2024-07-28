@@ -255,7 +255,7 @@ const App = () => {
                         ®
                       </span>&nbsp;&nbsp;&nbsp;
                     </span>
-                    sets online.
+                    <span className=" ms-[-10px]">sets online.</span>
                   </p>
                   <p
                     style={{
@@ -356,7 +356,7 @@ const App = () => {
                           maxWidth: 240,
                         }}
                       >
-                        Pop your LEGO bricks in a bag and weigh them. Then choose
+                        Pop your new LEGO bricks in a bag and weigh them. Then choose
                         the closest weight on our website or app.
                       </p>
                     </div>
@@ -655,7 +655,7 @@ const App = () => {
                         marginBottom: 30,
                       }}>
                         We have a unique data engine that searches multiple price
-                        databases of New <a href="https://www.lego2sell.com/contact">LEGO<span
+                        databases of New LEGO<span
 
                           style={{
                             fontSize: ".6rem",
@@ -666,13 +666,13 @@ const App = () => {
 
                         >
                           ®
-                        </span>&nbsp; </a>being sold over the last 6 months
+                        </span>&nbsp; being sold over the last 6 months
                         to give you the best second hand buy price on the market
                         for your sets.
                         <br />
                         <br />
                         With our cloud database that is updated daily we can give
-                        you instant current market value quotes for your new <a href="https://www.legooutletstore.com/">LEGO<span
+                        you instant current market value quotes for your new LEGO <span
 
                           style={{
                             fontSize: ".6rem",
@@ -683,7 +683,7 @@ const App = () => {
 
                         >
                           ®
-                        </span>&nbsp; sets</a>
+                        </span>&nbsp; sets
                         <br />
                         <br />
                         And if our AI engine can not give you a price just email

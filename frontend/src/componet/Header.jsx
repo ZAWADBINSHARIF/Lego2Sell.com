@@ -238,6 +238,16 @@ const Header = ({ addBasket }) => {
                       Terms &amp; conditions
                     </Link>
                   </li>
+                  <li class="pb-5 duration-300 hover:text-blue-500 last:pb-0 relative">
+                    <Link
+                      onClick={() => setMenuOpen(!MenuOpen)}
+                      title="Terms &amp; conditions"
+                      class="font-bold false"
+                      to="/Conditions"
+                    >
+                      Set condition infomation
+                    </Link>
+                  </li>
                 </ul>
               </div>
             )}
