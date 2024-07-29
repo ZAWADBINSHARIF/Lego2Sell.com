@@ -14,7 +14,7 @@ const Basket = () => {
   const productCondition = location.state.productCondition;
   const [price, setPrice] = useState(null);
   // console.log("price", price)
-  const storedUserId = localStorage.getItem("userId");
+  const storedUserId = useState(localStorage.getItem("userId"));
   const [data, setData] = useState();
   const route = location.pathname;
   const [opened, { open, close }] = useDisclosure(false);
