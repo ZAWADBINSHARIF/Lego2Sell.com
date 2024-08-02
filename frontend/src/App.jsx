@@ -356,8 +356,18 @@ const App = () => {
                           maxWidth: 240,
                         }}
                       >
-                        Pop your new LEGO bricks in a bag and weigh them. Then choose
-                        the closest weight on our website or app.
+                        Simple enter your new LEGO<span
+
+                          style={{
+                            fontSize: ".8rem",
+                            position: 'absolute',
+                            // marginLeft: -1
+
+                          }}
+
+                        >
+                          ®
+                        </span>&nbsp;&nbsp; set code into the search box above, Check the item image and enter the box condition.
                       </p>
                     </div>
                     {width > 1300 && (
