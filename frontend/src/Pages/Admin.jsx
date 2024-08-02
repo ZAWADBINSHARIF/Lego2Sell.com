@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react"
-import Adminorder from "../componet/Adminorder"
-import { useNavigate } from "react-router-dom"
-import baseUrl from "../context/baseUrl"
+import React, { useEffect, useState } from "react";
+import Adminorder from "../componet/Adminorder";
+import { useNavigate } from "react-router-dom";
+import baseUrl from "../context/baseUrl";
 
 const Admin = () => {
-  const [data, setData] = useState()
-  
+  const [data, setData] = useState();
+
   const fetchInfo = () => {
     return fetch(`${baseUrl}/GetOrder`)
       .then((res) => res.json())
-      .then((d) => setData(d.data))
-  }
+      .then((d) => setData(d.data));
+  };
   // console.log(data)
   useEffect(() => {
-    fetchInfo()
-  }, [])
-  const [SearchValue, setSearchValue] = useState()
-  const navigation = useNavigate()
+    fetchInfo();
+  }, []);
+  const [SearchValue, setSearchValue] = useState();
+  const navigation = useNavigate();
   return (
     <div className="">
       <div className="lg:px-44 px-6 py-4 my-6">
@@ -38,10 +38,10 @@ const Admin = () => {
           </button>
         </div>
         <div className="mt-4 mb-6">
-          <h3 className="text-xl lg:text-lg font-bold py-2">Search Order</h3>
+          <h3 className="text-xl lg:text-lg font-bold py-2">Search Customer using Name or Account ID</h3>
           {/* <SearchDas data={data} /> */}
           <input
-            placeholder="search Customer account "
+            placeholder="search Customer"
             className="border px-6 rounded-xl w-full py-4"
             type="text"
             onChange={(e) => setSearchValue(e.target.value)}
@@ -53,9 +53,9 @@ const Admin = () => {
               ? value?._id?.includes(SearchValue)
                 ? value?._id
                 : value?.Mydetails[0]?.firstName?.includes(SearchValue)
-                ? value?.Mydetails[0]?.firstName
-                : null
-              : value + " " + value?.email
+                  ? value?.Mydetails[0]?.firstName
+                  : null
+              : value + " " + value?.email;
           })
           .reverse()
           .map((value) => (
@@ -68,7 +68,7 @@ const Admin = () => {
           ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Admin
+export default Admin;

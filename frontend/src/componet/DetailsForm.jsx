@@ -1,74 +1,74 @@
-import { Divider, Group, Radio, Select, TextInput, Loader } from "@mantine/core"
-import { useForm } from "@mantine/form"
-import React, { useEffect, useState } from "react"
-import { DatePickerInput } from "@mantine/dates"
+import { Divider, Group, Radio, Select, TextInput, Loader } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import React, { useEffect, useState } from "react";
+import { DatePickerInput } from "@mantine/dates";
 // import CountryData from "../../CountryData.json"
 // import cities from "../../cities.json"
 // import CountryCitits from "../../CountryCitits.json"
-import CountryCitits from "../CountryCitits.json"
-import axios from "axios"
-import { Helmet } from "react-helmet"
-import { useLocation } from "react-router-dom"
-import Editdetails from "./Editdetails"
-import { useDisclosure } from "@mantine/hooks"
-import baseUrl from "../context/baseUrl"
+import CountryCitits from "../CountryCitits.json";
+import axios from "axios";
+import { Helmet } from "react-helmet";
+import { useLocation } from "react-router-dom";
+import Editdetails from "./Editdetails";
+import { useDisclosure } from "@mantine/hooks";
+import baseUrl from "../context/baseUrl";
 // import Select from "react-select"
 const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
-  const [searchValue, onSearchChange] = useState("")
+  const [searchValue, onSearchChange] = useState("");
 
-  const [data, setData] = useState()
+  const [data, setData] = useState();
   // console.log("gokulakrishhsn", data)
-  const [countryid, setCountryid] = useState("")
-  const location = useLocation()
+  const [countryid, setCountryid] = useState("");
+  const location = useLocation();
   useEffect(() => {
     // Check if the page has already been reloaded
-    const hasReloaded = sessionStorage.getItem("hasReloaded")
+    const hasReloaded = sessionStorage.getItem("hasReloaded");
 
     if (!hasReloaded) {
       // If the page has not been reloaded yet, set the flag and reload the page
-      sessionStorage.setItem("hasReloaded", true)
-      window.location.reload()
+      sessionStorage.setItem("hasReloaded", true);
+      window.location.reload();
     } else {
       // If the page has already been reloaded, perform any desired action
       // console.log("Page has already been reloaded")
     }
-  }, [])
-  const [PaymentDetails, setPaymentDetails] = useState(null) // Initialize with null or appropriate default value
+  }, []);
+  const [PaymentDetails, setPaymentDetails] = useState(null); // Initialize with null or appropriate default value
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
           `${baseUrl}/Mydetails/${storedUserId}`
-        )
-        const jsonData = await response.json()
+        );
+        const jsonData = await response.json();
         // Assuming you have a 'setData' function to set the fetched data
-        setData(jsonData.Mydetails[0])
+        setData(jsonData.Mydetails[0]);
       } catch (error) {
-        console.error("Error fetching data:", error)
+        console.error("Error fetching data:", error);
       }
-    }
+    };
 
-    fetchData() // Fetch the data first
+    fetchData(); // Fetch the data first
 
     // Now, set the PaymentDetails state after the data has been fetched and 'data' is updated.
-    setPaymentDetails(data?.paymentMethod)
-  }, [data?.paymentMethod, storedUserId])
+    setPaymentDetails(data?.paymentMethod);
+  }, [data?.paymentMethod, storedUserId]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
           "https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json"
-        )
-        const data = await response.json()
-        setCityData(data)
+        );
+        const data = await response.json();
+        setCityData(data);
       } catch (error) {
-        console.error("Error fetching city data:", error)
+        console.error("Error fetching city data:", error);
       }
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
@@ -86,28 +86,28 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
   // }, [storedUserId])
 
   // console.log("Paa", data?.paymentMethod)
-  const [state, setState] = useState([])
+  const [state, setState] = useState([]);
   // console.log(state)
-  const [stateid, setStateid] = useState("")
-  const price = localStorage.getItem("Price")
+  const [stateid, setStateid] = useState("");
+  const price = localStorage.getItem("Price");
   const handlecounty = (e) => {
-    const getcountryId = e.target.value
+    const getcountryId = e.target.value;
     const getStatedata = CountryCitits.find(
       (country) => country.country_id === getcountryId
-    ).states
-    setState(getStatedata)
-    setCountryid(getcountryId)
-  }
+    ).states;
+    setState(getStatedata);
+    setCountryid(getcountryId);
+  };
 
   const handlestate = (e) => {
-    const stateid = e.target.value
-    setStateid(stateid)
-  }
+    const stateid = e.target.value;
+    setStateid(stateid);
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     // alert("Get Country id" + countryid + " And " + stateid)
-  }
+  };
 
   // const [reload, setReload] = useState("0")
   // // console.log(reload)
@@ -124,8 +124,8 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
   //     }
   //   }, [])
   // }
-  const [opened, { open, close }] = useDisclosure(false)
-  const [firstName, setFirstName] = useState()
+  const [opened, { open, close }] = useDisclosure(false);
+  const [firstName, setFirstName] = useState();
   const form = useForm({
     initialValues: {
       email: data?.email,
@@ -147,8 +147,7 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
     },
 
     validate: {},
-  })
-
+  });
   const nextStep = () => {
     setActive((current) => {
       // if (form.validate().hasErrors) {
@@ -158,12 +157,12 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
         // Scroll to the top of the page with a smooth animation
         if (window.innerWidth <= 768) {
           // Scroll to the top of the page using the scrollTo() method
-          window.scrollTo(0, 0)
+          window.scrollTo(0, 0);
         }
       }
-      return current < 3 ? current + 1 : current
-    })
-  }
+      return current < 3 ? current + 1 : current;
+    });
+  };
   // console.log("gokula", formData)
   // const payload = {
   //   paymentMethod: formData.paymentMethod,
@@ -173,9 +172,9 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
   // if (PaymentDetails !== "paypal") {
   //   payload.accountNumber = formData.accountNumber
   // }
-  const [cityData, setCityData] = useState([])
+  const [cityData, setCityData] = useState([]);
   // console.log(cityData)
-  const country = [...new Set(cityData.map((items) => items.country))]
+  const country = [...new Set(cityData.map((items) => items.country))];
 
   // console.log("demo66", data)
   return (
@@ -238,7 +237,7 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
                 withAsterisk
                 label="First Name"
                 placeholder="First Name"
-                // {...form.getInputProps("firstName")}
+              // {...form.getInputProps("firstName")}
               />
             </div>
             <div class=" py-3">
@@ -248,7 +247,7 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
                 withAsterisk
                 label="Last Name"
                 placeholder="Last Name"
-                // {...form.getInputProps("lastName")}
+              // {...form.getInputProps("lastName")}
               />
             </div>
             <div class=" py-3">
@@ -259,7 +258,7 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
                 withAsterisk
                 label="Email"
                 placeholder="your@email.com"
-                // {...form.getInputProps("email")}
+              // {...form.getInputProps("email")}
               />
             </div>
             <div class=" py-3">
@@ -269,7 +268,7 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
                 withAsterisk
                 label="Telephone"
                 placeholder="Telephone"
-                // {...form.getInputProps("Telephone")}
+              // {...form.getInputProps("Telephone")}
               />
             </div>
             {/* <div class=" py-4">
@@ -329,7 +328,7 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
                       withAsterisk
                       label="Street Address1"
                       placeholder="StreetAddress1"
-                      // {...form.getInputProps("StreetAddress1")}
+                    // {...form.getInputProps("StreetAddress1")}
                     />
                   </div>
                   <div class=" py-3">
@@ -339,7 +338,7 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
                       withAsterisk
                       label="Street Address2"
                       placeholder="StreetAddress2"
-                      // {...form.getInputProps("StreetAddress2")}
+                    // {...form.getInputProps("StreetAddress2")}
                     />
                   </div>
                   <div className="py-3">
@@ -366,7 +365,7 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
                       searchable
                       searchValue={data?.Country}
                       data={["Country"]}
-                      // {...form.getInputProps("Country")}
+                    // {...form.getInputProps("Country")}
                     />
                   </div>
 
@@ -377,7 +376,7 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
                       withAsterisk
                       label="Postcode"
                       placeholder="Enter a Postcode"
-                      // {...form.getInputProps("Postcode")}
+                    // {...form.getInputProps("Postcode")}
                     />
                   </div>
                   {/* {data?.city && (
@@ -414,11 +413,10 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
                   >
                     <Group mt="xs">
                       <label
-                        className={` ${
-                          PaymentDetails === "BankTransfer"
-                            ? "border-2 border-blue-500 "
-                            : ""
-                        } flex items-center gap-4 border rounded-xl px-8 py-7`}
+                        className={` ${PaymentDetails === "BankTransfer"
+                          ? "border-2 border-blue-500 "
+                          : ""
+                          } flex items-center gap-4 border rounded-xl px-8 py-7`}
                       >
                         <Radio
                           checked={PaymentDetails === "BankTransfer"}
@@ -427,11 +425,10 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
                         />
                       </label>
                       <label
-                        className={`${
-                          PaymentDetails === "Paypal"
-                            ? "border-2 border-blue-500"
-                            : ""
-                        } flex items-center gap-4 border rounded-xl px-8 py-6`}
+                        className={`${PaymentDetails === "Paypal"
+                          ? "border-2 border-blue-500"
+                          : ""
+                          } flex items-center gap-4 border rounded-xl px-8 py-6`}
                       >
                         <Radio
                           checked={PaymentDetails === "Paypal"}
@@ -458,7 +455,7 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
                       withAsterisk
                       label="Need for revice your payment"
                       placeholder="Paypal Email"
-                      // {...form.getInputProps("Paypalemail")}
+                    // {...form.getInputProps("Paypalemail")}
                     />
                   </div>
                   <div class="rounded-md bg-[#F8F8FE] p-4 text-sm text-blue-500 text-center mt-4">
@@ -575,7 +572,7 @@ const DetailsForm = ({ setActive, setFormData, storedUserId }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DetailsForm
+export default DetailsForm;

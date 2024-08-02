@@ -6,47 +6,47 @@ import {
   Radio,
   Select,
   TextInput,
-} from "@mantine/core"
-import { useForm } from "@mantine/form"
-import axios from "axios"
-import React, { useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import CountryCity from "./Country"
-import baseUrl from "../context/baseUrl"
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import axios from "axios";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import CountryCity from "./Country";
+import baseUrl from "../context/baseUrl";
 
 const Editdetails = ({ close, setSidebarActive, opened, data }) => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [repeatpassword, setRepeatpassword] = useState()
-  const navigation = useNavigate()
-  const location = useLocation()
-  const [PaymentDetails, setPaymentDetails] = useState("Paypal")
-  const [searchValue, onSearchChange] = useState("")
-  const [selectedCoutry, setSelectedCoutry] = useState("")
-  const [selectedCity, setSelectedCity] = useState("")
-  const [selectedState, setSelectedState] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatpassword, setRepeatpassword] = useState();
+  const navigation = useNavigate();
+  const location = useLocation();
+  const [PaymentDetails, setPaymentDetails] = useState("Paypal");
+  const [searchValue, onSearchChange] = useState("");
+  const [selectedCoutry, setSelectedCoutry] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedState, setSelectedState] = useState("");
   const form = useForm({
     initialValues: {
-      email: "",
+      email: data?.email,
       paymentMethod: PaymentDetails,
-      firstName: "",
-      lastName: "",
-      Telephone: "",
-      title: "",
-      StreetAddress1: "",
+      firstName: data?.firstName,
+      lastName: data?.lastName,
+      Telephone: data?.Telephone,
+      title: data?.title,
+      StreetAddress1: data?.StreetAddress1,
       termsOfService: true,
-      StreetAddress2: "",
-      city: "",
+      StreetAddress2: data?.StreetAddress2,
+      city: data?.city,
       State: selectedState,
       Country: selectedCoutry,
-      Paypalemail: "",
-      accountNumber: "",
-      sortCode1: "",
-      sortCode2: "",
-      sortCode3: "",
-      TermsCheck: "",
+      Paypalemail: data?.Paypalemail,
+      accountNumber: data?.accountNumber,
+      sortCode1: data?.sortCode1,
+      sortCode2: data?.sortCode2,
+      sortCode3: data?.sortCode3,
+      TermsCheck: data?.TermsCheck,
       Marketingpreferences: "",
-      Postcode: "",
+      Postcode: data?.Postcode,
     },
 
     validate: {
@@ -67,9 +67,9 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
 
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
-  })
+  });
 
-  const storedUserId = localStorage.getItem("userId")
+  const storedUserId = localStorage.getItem("userId");
   const handleSubmit = async (values) => {
     try {
       const token = localStorage.getItem("token");
@@ -82,10 +82,10 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
         {
           headers: { Authorization: `Bearer ${token}` },
         }
-      )
+      );
       // console.log("New Email", response3)
-      const newToken = response3?.data?.token
-      localStorage.setItem("token", newToken)
+      const newToken = response3?.data?.token;
+      localStorage.setItem("token", newToken);
       const payload = {
         email: form.values.email,
         paymentMethod: PaymentDetails,
@@ -107,26 +107,26 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
         TermsCheck: form.values.TermsCheck,
         Marketingpreferences: form.values.TermsCheck,
         Postcode: form.values.Postcode,
-      }
+      };
 
       const response1 = await axios.post(
         `${baseUrl}/MyDetails/${storedUserId}`,
         payload, {
-          headers: { Authorization: `Bearer ${newToken}` },
-        }
-      )
+        headers: { Authorization: `Bearer ${newToken}` },
+      }
+      );
       // console.log("sdsds", response1.data)
       // Navigate to another route
     } catch (error) {
-      console.error("An error occurred:", error)
+      console.error("An error occurred:", error);
       // Handle the error as needed
     }
     // window.location.reload()
-    setSidebarActive(2)
+    setSidebarActive(2);
     // setFormData(values)
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    window.scrollTo({ top: 0, behavior: "smooth" });
     // nextStep()
-  }
+  };
 
   return (
     <Modal size={"xl"} opened={opened} onClose={close} title="Edit MyDetails">
@@ -136,6 +136,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
           <div className="py-3">
             <Select
               {...form.getInputProps("title")}
+              value={data?.title}
               withAsterisk
               label="Title"
               placeholder="Pick one"
@@ -151,6 +152,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
               label="First Name"
               placeholder="First Name"
               {...form.getInputProps("firstName")}
+              value={data?.firstName}
             />
           </div>
           <div class=" py-3">
@@ -159,6 +161,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
               label="Last Name"
               placeholder="Last Name"
               {...form.getInputProps("lastName")}
+              value={data?.lastName}
             />
           </div>
           <div class=" py-3">
@@ -168,7 +171,8 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
               label="Email"
               placeholder="your@email.com"
               {...form.getInputProps("email")}
-              // onChange={(e) => setEmail(e.target.value)}
+              value={data?.email}
+            // onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div class=" py-3">
@@ -177,6 +181,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
               label="Telephone"
               placeholder="Telephone"
               {...form.getInputProps("Telephone")}
+              value={data?.Telephone}
             />
           </div>
 
@@ -194,6 +199,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
                     label="Street Address1"
                     placeholder="StreetAddress1"
                     {...form.getInputProps("StreetAddress1")}
+                    value={data?.StreetAddress1}
                   />
                 </div>
                 <div class=" py-3">
@@ -202,6 +208,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
                     label="Street Address2"
                     placeholder="StreetAddress2"
                     {...form.getInputProps("StreetAddress2")}
+                    value={data?.StreetAddress2}
                   />
                 </div>
                 <div class=" py-3">
@@ -212,6 +219,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
                     name="city"
                     {...form.getInputProps("city")}
                     placeholder="Enter a City"
+                    value={data?.StreetAddress3}
                   />
                 </div>
                 <div className="py-3">
@@ -249,20 +257,18 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
                 >
                   <Group mt="xs">
                     <label
-                      className={` ${
-                        PaymentDetails === "BankTransfer"
-                          ? "border-2 border-blue-500"
-                          : ""
-                      } flex items-center gap-4 border rounded-xl px-8 py-7`}
+                      className={` ${PaymentDetails === "BankTransfer"
+                        ? "border-2 border-blue-500"
+                        : ""
+                        } flex items-center gap-4 border rounded-xl px-8 py-7`}
                     >
                       <Radio value="BankTransfer" label="Bank Transfer" />
                     </label>
                     <label
-                      className={`${
-                        PaymentDetails === "Paypal"
-                          ? "border-2 border-blue-500"
-                          : ""
-                      } flex items-center gap-4 border rounded-xl px-8 py-6`}
+                      className={`${PaymentDetails === "Paypal"
+                        ? "border-2 border-blue-500"
+                        : ""
+                        } flex items-center gap-4 border rounded-xl px-8 py-6`}
                     >
                       <Radio value="Paypal" />
                       <img
@@ -285,6 +291,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
                     label="Need for revice your payment"
                     placeholder="Paypal Email"
                     {...form.getInputProps("Paypalemail")}
+                    value={data?.Paypalemail}
                   />
                 </div>
                 <div class="rounded-md bg-[#F8F8FE] p-4 text-sm text-blue-500 text-center mt-4">
@@ -311,6 +318,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
                       id="customer_paymentinfo_bank"
                       title="Enter Account Number"
                       className="h-[67px] rounded-3xl lg:rounded-xl w-full lg:pl-6 pl-0 km_ignore"
+                      value={data?.accountNumber}
                     />
                   </div>
                   <div className="w-full md:w-1/2 md:pl-4">
@@ -328,6 +336,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
                           className="h-[67px] rounded-3xl lg:rounded-xl w-full lg:pl-6 pl-1 km_ignore"
                           name="customer_paymentinfo_bank_sort1"
                           id="customer_paymentinfo_bank_sort1"
+                          value={data?.sortCode1}
                         />
                       </div>
                       <div className=" px-1 -mt-3">-</div>
@@ -341,6 +350,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
                           className="h-[67px]  rounded-3xl lg:rounded-xl w-full lg:pl-6 pl-1 km_ignore"
                           name="customer_paymentinfo_bank_sort2"
                           id="customer_paymentinfo_bank_sort2"
+                          value={data?.sortCode2}
                         />
                       </div>
                       <div className=" px-1  -mt-3">-</div>
@@ -354,6 +364,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
                           className="h-[67px]  rounded-3xl lg:rounded-xl w-full lg:pl-6 pl-1 km_ignore"
                           name="customer_paymentinfo_bank_sort3"
                           id="customer_paymentinfo_bank_sort3"
+                          value={data?.sortCode3}
                         />
                       </div>
                     </div>
@@ -378,6 +389,6 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
         </div>
       </form>
     </Modal>
-  )
-}
-export default Editdetails
+  );
+};
+export default Editdetails;

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react"
-import AdminOffer from "../componet/AdminOffer"
-import { useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import AdminOffer from "../componet/AdminOffer";
+import { useNavigate } from "react-router-dom";
 import CryptoJS from 'crypto-js';
 import baseUrl from "../context/baseUrl";
 
 const CustomerOffers = () => {
-  const [data, setData] = useState()
+  const [data, setData] = useState();
   const fetchInfo = () => {
     // Data to encrypt
     const sensitiveData = 'frontend';
@@ -21,14 +21,14 @@ const CustomerOffers = () => {
       },
     })
       .then((res) => res.json())
-      .then((d) => setData(d.orders))
-  }
+      .then((d) => setData(d.orders));
+  };
   useEffect(() => {
-    fetchInfo()
-  }, [])
+    fetchInfo();
+  }, []);
   // console.log(data, "lego")
-  const [SearchValue, setSearchValue] = useState()
-  const navigation = useNavigate()
+  const [SearchValue, setSearchValue] = useState();
+  const navigation = useNavigate();
   return (
     <div className="">
       <div className="lg:px-44 px-6 py-4 my-6">
@@ -50,7 +50,7 @@ const CustomerOffers = () => {
           </button>
         </div>
         <div className="mt-4 mb-6">
-          <h3 className="text-lg font-bold py-2">Search Order</h3>
+          <h3 className="text-lg font-bold py-2">Search Customer offers using Account ID or Email or First Name</h3>
           <input
             placeholder="Search Customer Offers"
             className="border px-6 rounded-xl w-full py-4"
@@ -61,22 +61,22 @@ const CustomerOffers = () => {
         {data
           ?.filter((value) => {
             // console.log(value, "lol")
-            const { order, Mydetails, email } = value
-            const offerId = String(order?.offerId || "") // Convert offerId to a string
+            const { order, Mydetails, email } = value;
+            const offerId = String(order?.offerId || ""); // Convert offerId to a string
 
             if (!SearchValue) {
-              return true // If no search value, show all data
+              return true; // If no search value, show all data
             }
 
-            const searchLower = SearchValue?.toLowerCase() // Convert search value to lowercase
-            const firstName = value?.user?.Mydetails[0].firstName || ""
-            const emailLower = value?.user?.email?.toLowerCase()
+            const searchLower = SearchValue?.toLowerCase(); // Convert search value to lowercase
+            const firstName = value?.user?.Mydetails[0].firstName?.toLowerCase() || "";
+            const emailLower = value?.user?.email?.toLowerCase();
 
             return (
               offerId.includes(searchLower) ||
               emailLower.includes(searchLower) ||
               firstName?.toLowerCase().includes(searchLower)
-            )
+            );
           })
           .map((value, index) => {
             if (
@@ -92,9 +92,9 @@ const CustomerOffers = () => {
                   data={value.Mydetails}
                   items={value}
                 />
-              )
+              );
             }
-            return null
+            return null;
           })}
 
         {/* {data
@@ -127,7 +127,7 @@ const CustomerOffers = () => {
           })} */}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CustomerOffers
+export default CustomerOffers;

@@ -1,6 +1,7 @@
-const { default: mongoose } = require("mongoose")
+const { default: mongoose } = require("mongoose");
 
 const userSchema = new mongoose.Schema({
+  _id: String,
   email: String,
   password: String,
   UserId: String,
@@ -10,9 +11,9 @@ const userSchema = new mongoose.Schema({
   Search: String,
   verifytoken: String,
   admin: String,
-  blocked : Boolean,
-})
+  blocked: Boolean,
+});
 
 // Define the User model
-const UserData = mongoose.model("UserData", userSchema)
-module.exports = UserData
+const UserData = mongoose.model("UserData", userSchema);
+module.exports = UserData;

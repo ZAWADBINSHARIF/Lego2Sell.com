@@ -241,6 +241,7 @@ app.post("/signup", async (req, res) => {
 
     // Generate a unique ID for the user
     const userId = uuid.v4();
+    const _id = crypto.randomInt(99, 9999999999);
 
     // Check if the email already exists
     const existingUser = await UserData.findOne({ email });
@@ -252,10 +253,11 @@ app.post("/signup", async (req, res) => {
 
     // Hash the password using bcryptjs
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    console.log(_id);
     // Create a new user with the generated ID
     const newUser = new UserData({
-      userId: userId,
+      _id: _id,
+      UserId: userId,
       email,
       password: hashedPassword,
       admin: "user",
