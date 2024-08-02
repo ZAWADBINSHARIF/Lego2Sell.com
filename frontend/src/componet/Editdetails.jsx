@@ -219,7 +219,7 @@ const Editdetails = ({ close, setSidebarActive, opened, data }) => {
                     name="city"
                     {...form.getInputProps("city")}
                     placeholder="Enter a City"
-                    value={data?.StreetAddress3}
+                    value={data?.city}
                   />
                 </div>
                 <div className="py-3">
