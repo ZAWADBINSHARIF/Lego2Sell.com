@@ -1,6 +1,6 @@
-import React from "react"
-import { Link } from "react-router-dom"
-import { Helmet } from 'react-helmet'
+import React from "react";
+import { Link } from "react-router-dom";
+import { Helmet } from 'react-helmet';
 
 const Acceptance = () => {
   return (
@@ -11,8 +11,8 @@ const Acceptance = () => {
           name="description"
           content="Ready to sell your LEGO® collection? Look no further! Our platform offers a hassle-free experience for selling your LEGO® bricks. Follow our acceptance guidelines"
         />
-        
-        <meta name="keywords" content="LEGO® Sell, sell lego sets,custom lego sets for sale,best place to sell legos,how to sell legos,sell lego"/>
+
+        <meta name="keywords" content="LEGO® Sell, sell lego sets,custom lego sets for sale,best place to sell legos,how to sell legos,sell lego" />
 
       </Helmet>
       <div className="w-full px-6 lg:px-44 py-12 lg:py-24">
@@ -29,17 +29,17 @@ const Acceptance = () => {
               </p>
               <p className="py-4 mt-6">
                 If you’re thinking of <a href="https://www.lego2sell.com/">selling your LEGO<span
-                          
-                          style={{
-                            fontSize: ".6rem",
-                            position: 'absolute',
-                            // marginLeft: -1
-                          
-                          }}
 
-                          >
-                            ®
-                            </span>&nbsp;</a> to us, read our
+                  style={{
+                    fontSize: ".6rem",
+                    position: 'absolute',
+                    // marginLeft: -1
+
+                  }}
+
+                >
+                  ®
+                </span>&nbsp;</a> to us, read our
                 acceptance guidelines first. This will help you know what to
                 send and what to keep.
               </p>
@@ -122,8 +122,8 @@ const Acceptance = () => {
                 What happens if you don’t accept my LEGO®?
               </h3>
               <p className="py-2">
-                If we find any LEGO® that doesn’t meet <a href="https://www.bricklink.com/">acceptance guidelines</a> 
-                guidelines, we’ll email you to let you know. You can choose
+                If we find any LEGO® that doesn’t meet acceptance guidelines
+                , we’ll email you to let you know. You can choose
                 whether you would like us to dispose of your LEGO® on your
                 behalf, or we can send it back to you. However, you will need to
                 cover the postage cost for this which will be in the email.
@@ -165,7 +165,7 @@ const Acceptance = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Acceptance
+export default Acceptance;
